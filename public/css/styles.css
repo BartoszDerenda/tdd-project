@@ -1,0 +1,51 @@
+.dl-horizontal {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-auto-columns: 25%;
+    grid-auto-flow: column;
+}
+
+hr {
+    border: none;
+    border-top: 2px dashed #6b6b6b;
+    color: #fff;
+    background-color: #fff;
+    height: 2px;
+    width: 100%;
+}
+
+.comment {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.post-question {
+    padding: 14px 18px 14px 18px;
+    background: #e3fbfd;
+    border: 2px solid #414141;
+    box-shadow: 0 2px 2px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.post-answer {
+    padding: 14px 18px 14px 18px;
+    background: #f8f8f8;
+    border-right: 2px solid #414141;
+    border-bottom: 2px solid #414141;
+    border-left: 2px solid #414141;
+    box-shadow: 0 2px 2px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.post-bestanswer {
+    padding: 14px 18px 14px 18px;
+    background: #e5ffc1;
+    border-right: 2px solid #414141;
+    border-bottom: 2px solid #414141;
+    border-left: 2px solid #414141;
+    box-shadow: 0 2px 2px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
