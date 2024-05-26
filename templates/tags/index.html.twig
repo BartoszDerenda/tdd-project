@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.tags_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.tags_list'|trans }}</h1>
+    <h3><a href="{{ url('tags_create') }}" title="{{ 'action.create_tags'|trans }}">
+            {{ 'action.create_tags'|trans }}
+        </a></h3>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'tags.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'tags.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'tags.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'tags.title') }}</th>
+                <th>{{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tags in pagination.items %}
+                <tr>
+                    <td>{{ tags.id }}</td>
+                    <td>{{ tags.createdAt|format_date('long') }}</td>
+                    <td>{{ tags.updatedAt|format_date('long') }}</td>
+                    <td>{{ tags.title }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ 'action.options'|trans }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url('tags_show', {id: tags.id}) }}" title="{{ 'action.show'|trans }}">{{ 'action.show'|trans }}</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url('tags_edit', {id: tags.id}) }}" title="{{ 'action.edit'|trans }}">{{ 'action.edit'|trans }}</a></li>
+                                <li><a class="dropdown-item" href="{{ url('tags_delete', {id: tags.id}) }}" title="{{ 'action.delete'|trans }}">{{ 'action.delete'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

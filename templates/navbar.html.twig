@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url('home_index') }}">Q&A</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url('question_index') }}">Forum</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'navbar.dropdown_title'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ url('category_index') }}">{{ 'navbar.dropdown_category'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('tags_index') }}">{{ 'navbar.dropdown_tags'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('user_index') }}">{{ 'navbar.dropdown_user'|trans }}</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            <li class="nav-item d-flex">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="nav-link black">{{ app.user.email }}</div>
+                        <a class="nav-link active" href="{{ url('app_logout') }}">{{ 'action.logout'|trans }}</a>
+                        <a class="nav-link active" href="{{ url('app_account_edit', {id: app.user.id}) }}">{{ 'action.account_edit'|trans }}</a>
+                {% else %}
+                        <a class="nav-link active" href="{{ url('app_login') }}">{{ 'action.login'|trans }}</a>
+                        <a class="nav-link active" href="{{ url('app_register') }}">{{ 'action.register'|trans }}</a>
+                {% endif %}
+            </li>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.question_details'|trans({'%id%': question.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.question_details'|trans({'%id%': question.id|default('')}) }}</h1>
+    {% if question is defined and question|length %}
+        <div class="post-question">
+            <dl class="dl-horizontal">
+                <dt>{{ 'label.id'|trans }}</dt>
+                <dd>{{ question.id }}</dd>
+                <dt>{{ 'label.title'|trans }}</dt>
+                <dd>{{  question.title }}</dd>
+                <dt>{{ 'label.author'|trans }}</dt>
+                {% if question.author.nickname is defined %}
+                    <dd>{{  question.author.nickname }}</dd>
+                {% else %}
+                    <dd>Anonymous</dd>
+                {% endif %}
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>{{ 'label.category'|trans }}</dt>
+                <dd>{{  question.category.title }}</dd>
+                <dt>{{ 'label.tags'|trans }}</dt>
+                <dd>{{  question.tags|join(', ') }}</dd>
+            </dl>
+            <hr>
+            <dl>
+                <dt>{{ 'label.content'|trans }}</dt>
+                <dd class="comment">{{ question.comment }}</dd>
+                {% if question.image|default(null) %}
+                    <dd><a href="{{ asset('uploads/' ~ question.image) }}" target="_blank"><img src="{{ asset('uploads/' ~ question.image) }}" class="w-25 img-thumbnail"></a></dd>
+                {% endif %}
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>{{ 'label.created_at'|trans }}</dt>
+                <dd>{{ question.createdAt|format_date('long') }}</dd>
+                <dt>{{ 'label.updated_at'|trans }}</dt>
+                <dd>{{ question.updatedAt|format_date('long') }}</dd>
+            </dl>
+            <button>
+                <a href="{{ url('answer_create', {id: question.id}) }}" title="{{ 'action.answer_this'|trans }}">
+                    {{ 'action.answer_this'|trans }}
+                </a>
+            </button>
+        </div>
+        {% if pagination is defined and pagination.items|length %}
+            {% for answer in pagination.items %}
+                {% if answer.bestanswer is same as(true) %}
+                    <div class="post-bestanswer">
+                        <dl class="dl-horizontal">
+                            <dt>{{ 'label.id'|trans }}</dt>
+                            <dd>{{ answer.id }}</dd>
+                            <dt>{{ 'label.author'|trans }}</dt>
+                            {% if answer.author.nickname is defined %}
+                                <dd>{{ answer.author.nickname }}</dd>
+                            {% else %}
+                                <dd>Anonymous</dd>
+                            {% endif %}
+                            {% if (is_granted('AWARD', answer) or is_granted('ROLE_ADMIN')) and answer.bestanswer != 1 %}
+                                <dd></dd>
+                                <dt></dt>
+                                <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_mark', {id: answer.id}) }}" title="{{ 'action.mark_best_answer'|trans }}">
+                                    {{ 'action.mark_best_answer'|trans }}
+                                </a>
+                            {% endif %}
+                            {% if (is_granted('AWARD', answer) or is_granted('ROLE_ADMIN')) and answer.bestanswer != 0 %}
+                                <dd></dd>
+                                <dt></dt>
+                                <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_unmark', {id: answer.id}) }}" title="{{ 'action.unmark_best_answer'|trans }}">
+                                    {{ 'action.unmark_best_answer'|trans }}
+                                </a>
+                            {% endif %}
+                        </dl>
+                        <hr>
+                        <dl>
+                            <dt>{{ 'label.content'|trans }}</dt>
+                            <dd class="comment">{{ answer.comment }}</dd>
+                            {% if answer.image|default(null) %}
+                                <dd><a href="{{ asset('uploads/' ~ answer.image) }}" target="_blank"><img src="{{ asset('uploads/' ~ answer.image) }}" class="w-25 img-thumbnail"></a></dd>
+                            {% endif %}
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>{{ 'label.created_at'|trans }}</dt>
+                            <dd>{{ answer.createdAt|format_date('long') }}</dd>
+                            <dt>{{ 'label.updated_at'|trans }}</dt>
+                            <dd>{{ answer.updatedAt|format_date('long') }}</dd>
+                            {% if is_granted('EDIT', answer) %}
+                                <dt></dt>
+                                <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_edit', {id: answer.id}) }}" title="{{ 'action.edit'|trans }}">
+                                    {{ 'action.edit'|trans }}
+                                </a>
+                            {% endif %}
+                            {% if is_granted('DELETE', answer) %}
+                                <dt></dt>
+                                <a class="btn btn-primary btn-sm make-smaller" type="button" href="{{ url('answer_delete', {id: answer.id}) }}" title="{{ 'action.delete'|trans }}">
+                                    {{ 'action.delete'|trans }}
+                                </a>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+                {% endfor %}
+                {% for answer in pagination.items %}
+                    {% if answer.bestanswer is same as(false) %}
+                        <div class="post-answer">
+                            <dl class="dl-horizontal">
+                                <dt>{{ 'label.id'|trans }}</dt>
+                                <dd>{{ answer.id }}</dd>
+                                <dt>{{ 'label.author'|trans }}</dt>
+                                {% if answer.author.nickname is defined %}
+                                    <dd>{{ answer.author.nickname }}</dd>
+                                {% else %}
+                                    <dd>Anonymous</dd>
+                                {% endif %}
+                                {% if (is_granted('AWARD', answer) or is_granted('ROLE_ADMIN')) and answer.bestanswer != 1 %}
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_mark', {id: answer.id}) }}" title="{{ 'action.mark_best_answer'|trans }}">
+                                        {{ 'action.mark_best_answer'|trans }}
+                                    </a>
+                                {% endif %}
+                                {% if (is_granted('AWARD', answer) or is_granted('ROLE_ADMIN')) and answer.bestanswer != 0 %}
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_unmark', {id: answer.id}) }}" title="{{ 'action.unmark_best_answer'|trans }}">
+                                        {{ 'action.unmark_best_answer'|trans }}
+                                    </a>
+                                {% endif %}
+                            </dl>
+                            <hr>
+                            <dl>
+                                <dt>{{ 'label.content'|trans }}</dt>
+                                <dd class="comment">{{ answer.comment }}</dd>
+                                {% if answer.image|default(null) %}
+                                    <dd><a href="{{ asset('uploads/' ~ answer.image) }}" target="_blank"><img src="{{ asset('uploads/' ~ answer.image) }}" class="w-25 img-thumbnail"></a></dd>
+                                {% endif %}
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>{{ 'label.created_at'|trans }}</dt>
+                                <dd>{{ answer.createdAt|format_date('long') }}</dd>
+                                <dt>{{ 'label.updated_at'|trans }}</dt>
+                                <dd>{{ answer.updatedAt|format_date('long') }}</dd>
+                                {% if is_granted('EDIT', answer) %}
+                                    <dt></dt>
+                                    <a class="btn btn-primary btn-sm" type="button" href="{{ url('answer_edit', {id: answer.id}) }}" title="{{ 'action.edit'|trans }}">
+                                        {{ 'action.edit'|trans }}
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('DELETE', answer) %}
+                                    <dt></dt>
+                                    <a class="btn btn-primary btn-sm make-smaller" type="button" href="{{ url('answer_delete', {id: answer.id}) }}" title="{{ 'action.delete'|trans }}">
+                                        {{ 'action.delete'|trans }}
+                                    </a>
+                                {% endif %}
+                            </dl>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        {% endif %}
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+        <p>
+            <a href="{{ url('question_index') }}" title="{{ 'action.back_to_list'|trans }}">
+                {{ 'action.back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message.record_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
