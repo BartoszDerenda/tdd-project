@@ -27,6 +27,9 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <report>
+            <text outputFile="php://stdout" showUncoveredFiles="true" showOnlySummary="false"/>
+        </report>
     </coverage>
 
     <listeners>
@@ -34,5 +37,6 @@
     </listeners>
 
     <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>
