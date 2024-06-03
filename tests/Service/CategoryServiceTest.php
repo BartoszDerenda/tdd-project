@@ -10,7 +10,6 @@ use App\Service\CategoryService;
 use App\Service\CategoryServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -36,8 +35,7 @@ class CategoryServiceTest extends KernelTestCase
      * Set up test.
      *
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @throws NotFoundExceptionInterface|Exception
      */
     public function setUp(): void
     {
@@ -76,7 +74,7 @@ class CategoryServiceTest extends KernelTestCase
     /**
      * Test delete.
      *
-     * @throws OptimisticLockException|ORMException
+     * @throws ORMException
      */
     public function testDelete(): void
     {
@@ -102,6 +100,25 @@ class CategoryServiceTest extends KernelTestCase
         $this->assertNull($resultCategory);
     }
 
+    /**
+     * Test find by id.
+     *
+     */
+    public function testFindById(): void
+    {
+        // given
+        $expectedCategory = new Category();
+        $expectedCategory->setTitle('Test Category');
+        $this->entityManager->persist($expectedCategory);
+        $this->entityManager->flush();
+        $expectedCategoryId = $expectedCategory->getId();
+
+        // when
+        $resultCategory = $this->categoryService->findOneById($expectedCategoryId);
+
+        // then
+        $this->assertEquals($expectedCategory, $resultCategory);
+    }
 
     /**
      * Test pagination empty list.

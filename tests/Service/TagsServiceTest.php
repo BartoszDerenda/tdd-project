@@ -10,8 +10,8 @@ use App\Service\TagsService;
 use App\Service\TagsServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -35,7 +35,7 @@ class TagsServiceTest extends KernelTestCase
      * Set up test.
      *
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws NotFoundExceptionInterface|Exception
      */
     public function setUp(): void
     {
@@ -74,7 +74,7 @@ class TagsServiceTest extends KernelTestCase
     /**
      * Test delete.
      *
-     * @throws OptimisticLockException|ORMException
+     * @throws ORMException
      */
     public function testDelete(): void
     {
@@ -103,10 +103,8 @@ class TagsServiceTest extends KernelTestCase
     /**
      * Test find by id.
      *
-     * @throws ORMException
      */
 
-    /**
     public function testFindById(): void
     {
         // given
@@ -122,7 +120,6 @@ class TagsServiceTest extends KernelTestCase
         // then
         $this->assertEquals($expectedTags, $resultTags);
     }
-    */
 
     /**
      * Test pagination empty list.
