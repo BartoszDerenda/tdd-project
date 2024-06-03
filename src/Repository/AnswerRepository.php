@@ -65,6 +65,17 @@ class AnswerRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Answer|null
+     */
+    public function findOneById(int $id): ?Answer
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    /**
      * Save entity.
      *
      * @param Answer $answer Answer entity

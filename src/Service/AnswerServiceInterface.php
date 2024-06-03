@@ -25,6 +25,14 @@ interface AnswerServiceInterface
     public function getPaginatedList(int $page, Question $question): PaginationInterface;
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Answer|null
+     */
+    public function findOneById(int $id): ?Answer;
+
+    /**
      * Save entity.
      *
      * @param Answer $answer Answer entity

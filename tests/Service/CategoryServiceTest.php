@@ -12,6 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -36,6 +37,7 @@ class CategoryServiceTest extends KernelTestCase
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function setUp(): void
     {
@@ -100,28 +102,6 @@ class CategoryServiceTest extends KernelTestCase
         $this->assertNull($resultCategory);
     }
 
-    /**
-     * Test find by id.
-     *
-     * @throws ORMException
-     */
-    /**
-    public function testFindById(): void
-    {
-        // given
-        $expectedCategory = new Category();
-        $expectedCategory->setTitle('Test Category');
-        $this->entityManager->persist($expectedCategory);
-        $this->entityManager->flush();
-        $expectedCategoryId = $expectedCategory->getId();
-
-        // when
-        $resultCategory = $this->categoryService->findOneById($expectedCategoryId);
-
-        // then
-        $this->assertEquals($expectedCategory, $resultCategory);
-    }
-     */
 
     /**
      * Test pagination empty list.

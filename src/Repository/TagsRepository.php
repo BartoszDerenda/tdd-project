@@ -57,6 +57,18 @@ class TagsRepository extends ServiceEntityRepository
             ->orderBy('tags.updatedAt', 'DESC');
     }
 
+
+    /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Tags|null
+     */
+    public function findOneById(int $id): ?Tags
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
     /**
      * Create entity.
      *

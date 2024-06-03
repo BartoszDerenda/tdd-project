@@ -10,6 +10,7 @@ use App\Entity\Question;
 use App\Entity\User;
 use App\Form\Type\QuestionType;
 use App\Service\AnswerServiceInterface;
+use App\Service\CategoryServiceInterface;
 use App\Service\QuestionServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -36,6 +38,11 @@ class QuestionController extends AbstractController
     private AnswerServiceInterface $answerService;
 
     /**
+     * Category service.
+     */
+    private CategoryServiceInterface $categoryService;
+
+    /**
      * Translator.
      */
     private TranslatorInterface $translator;
@@ -47,10 +54,11 @@ class QuestionController extends AbstractController
      * @param AnswerServiceInterface   $answerService   Answer interface
      * @param TranslatorInterface      $translator      Translator interface
      */
-    public function __construct(QuestionServiceInterface $questionService, AnswerServiceInterface $answerService, TranslatorInterface $translator)
+    public function __construct(QuestionServiceInterface $questionService, AnswerServiceInterface $answerService, CategoryServiceInterface $categoryService, TranslatorInterface $translator)
     {
         $this->questionService = $questionService;
         $this->answerService = $answerService;
+        $this->categoryService = $categoryService;
         $this->translator = $translator;
     }
 
@@ -74,9 +82,8 @@ class QuestionController extends AbstractController
     /**
      * Show action.
      *
-     * @param Question $question Question entity
-     * @param Request  $request  Request
-     *
+     * @param Request $request Request
+     * @param int $id
      * @return Response Response
      */
     #[Route(
@@ -85,8 +92,14 @@ class QuestionController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Question $question, Request $request): Response
+    public function show(Request $request, int $id): Response
     {
+        $question = $this->questionService->findOneById($id);
+
+        if (!$question) {
+            throw $this->createNotFoundException('The question does not exist.');
+        }
+
         $pagination = $this->answerService->getPaginatedList(
             $request->query->getInt('page', 1),
             $question
@@ -98,9 +111,8 @@ class QuestionController extends AbstractController
     /**
      * Show by category action.
      *
-     * @param Category $category Category entity
-     * @param Request  $request  Request
-     *
+     * @param Request $request Request
+     * @param int $id
      * @return Response Response
      */
     #[Route(
@@ -109,8 +121,14 @@ class QuestionController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function showByCategory(Category $category, Request $request): Response
+    public function showByCategory(Request $request, int $id): Response
     {
+        $category = $this->categoryService->findOneById($id);
+
+        if (!$category) {
+            throw $this->createNotFoundException('The category does not exist.');
+        }
+
         $pagination = $this->questionService->queryByCategory(
             $request->query->getInt('page', 1),
             $category
@@ -169,15 +187,22 @@ class QuestionController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request  $request  HTTP request
-     * @param Question $question Question entity
-     *
+     * @param Request $request HTTP request
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'question_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    #[IsGranted('EDIT', subject: 'question')]
-    public function edit(Request $request, Question $question): Response
+    public function edit(Request $request, int $id): Response
     {
+        $question = $this->questionService->findOneById($id);
+
+        if (!$question) {
+            throw $this->createNotFoundException('The question does not exist.');
+        }
+        if (!$this->isGranted('EDIT', $question)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             QuestionType::class,
             $question,
@@ -221,15 +246,22 @@ class QuestionController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request  $request  HTTP request
-     * @param Question $question Question entity
-     *
+     * @param Request $request HTTP request
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'question_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    #[IsGranted('DELETE', subject: 'question')]
-    public function delete(Request $request, Question $question): Response
+    public function delete(Request $request, int $id): Response
     {
+        $question = $this->questionService->findOneById($id);
+
+        if (!$question) {
+            throw $this->createNotFoundException('The question does not exist.');
+        }
+        if (!$this->isGranted('DELETE', $question)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $question,

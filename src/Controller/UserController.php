@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -74,14 +75,21 @@ class UserController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param User    $user    User entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, int $id): Response
     {
+        $user = $this->userService->findOneById($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('The user does not exist.');
+        }
+        if (!$this->isGranted('ROLE_ADMIN', $user)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             AdminType::class,
             $user,
@@ -121,14 +129,21 @@ class UserController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param User    $user    User entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, int $id): Response
     {
+        $user = $this->userService->findOneById($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('The user does not exist.');
+        }
+        if (!$this->isGranted('ROLE_ADMIN', $user)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $user,

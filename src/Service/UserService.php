@@ -55,6 +55,17 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public function findOneById(int $id): ?User
+    {
+        return $this->userRepository->findOneById($id);
+    }
+
+    /**
      * Save entity.
      *
      * @param User $user User entity

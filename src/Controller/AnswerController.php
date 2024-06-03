@@ -10,12 +10,13 @@ use App\Entity\Question;
 use App\Entity\User;
 use App\Form\Type\AnswerType;
 use App\Service\AnswerServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Service\QuestionServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -30,6 +31,11 @@ class AnswerController extends AbstractController
     private AnswerServiceInterface $answerService;
 
     /**
+     * Question service.
+     */
+    private QuestionServiceInterface $questionService;
+
+    /**
      * Translator.
      */
     private TranslatorInterface $translator;
@@ -40,18 +46,18 @@ class AnswerController extends AbstractController
      * @param AnswerServiceInterface $answerService Answer interface
      * @param TranslatorInterface    $translator    Translator interface
      */
-    public function __construct(AnswerServiceInterface $answerService, TranslatorInterface $translator)
+    public function __construct(AnswerServiceInterface $answerService, QuestionServiceInterface $questionService, TranslatorInterface $translator)
     {
         $this->answerService = $answerService;
+        $this->questionService = $questionService;
         $this->translator = $translator;
     }
 
     /**
      * Create action.
      *
-     * @param Request  $request  Request
-     * @param Question $question Question entity
-     *
+     * @param Request $request Request
+     * @param int $id
      * @return Response Response
      */
     #[Route(
@@ -60,10 +66,16 @@ class AnswerController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|POST',
     )]
-    public function create(Request $request, Question $question): Response
+    public function create(Request $request, int $id): Response
     {
         /** @var User $author */
         $author = $this->getUser();
+
+        $question = $this->questionService->findOneById($id);
+
+        if (!$question) {
+            throw $this->createNotFoundException('The question does not exist.');
+        }
 
         $answer = new Answer();
         $answer->setAuthor($author);
@@ -105,14 +117,21 @@ class AnswerController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Answer  $answer  Answer entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'answer_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    #[IsGranted('EDIT', subject: 'answer')]
-    public function edit(Request $request, Answer $answer): Response
+    public function edit(Request $request, int $id): Response
     {
+        $answer = $this->answerService->findOneById($id);
+
+        if (!$answer) {
+            throw $this->createNotFoundException('The answer does not exist.');
+        }
+        if (!$this->isGranted('VIEW', $answer)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             AnswerType::class,
             $answer,
@@ -157,14 +176,21 @@ class AnswerController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Answer  $answer  Answer entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'answer_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    #[IsGranted('DELETE', subject: 'answer')]
-    public function delete(Request $request, Answer $answer): Response
+    public function delete(Request $request, int $id): Response
     {
+        $answer = $this->answerService->findOneById($id);
+
+        if (!$answer) {
+            throw $this->createNotFoundException('The answer does not exist.');
+        }
+        if (!$this->isGranted('DELETE', $answer)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $answer,
@@ -199,14 +225,21 @@ class AnswerController extends AbstractController
      * Mark action.
      *
      * @param Request $request HTTP request
-     * @param Answer  $answer  Answer entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/mark', name: 'answer_mark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    #[IsGranted('AWARD', subject: 'answer')]
-    public function mark(Request $request, Answer $answer): Response
+    public function mark(Request $request, int $id): Response
     {
+        $answer = $this->answerService->findOneById($id);
+
+        if (!$answer) {
+            throw $this->createNotFoundException('The answer does not exist.');
+        }
+        if (!$this->isGranted('AWARD', $answer)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $answer,
@@ -241,14 +274,21 @@ class AnswerController extends AbstractController
      * Unmark action.
      *
      * @param Request $request HTTP request
-     * @param Answer  $answer  Answer entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/unmark', name: 'answer_unmark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    #[IsGranted('AWARD', subject: 'answer')]
-    public function unmark(Request $request, Answer $answer): Response
+    public function unmark(Request $request, int $id): Response
     {
+        $answer = $this->answerService->findOneById($id);
+
+        if (!$answer) {
+            throw $this->createNotFoundException('The answer does not exist.');
+        }
+        if (!$this->isGranted('AWARD', $answer)) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $answer,

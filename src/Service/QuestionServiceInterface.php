@@ -34,6 +34,14 @@ interface QuestionServiceInterface
     public function queryByCategory(int $page, Category $category): PaginationInterface;
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Question|null
+     */
+    public function findOneById(int $id): ?Question;
+
+    /**
      * Save entity.
      *
      * @param Question $question Question entity

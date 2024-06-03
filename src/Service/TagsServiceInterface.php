@@ -23,6 +23,14 @@ interface TagsServiceInterface
     public function getPaginatedList(int $page): PaginationInterface;
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Tags|null
+     */
+    public function findOneById(int $id): ?Tags;
+
+    /**
      * Save entity.
      *
      * @param Tags $tags Tags entity

@@ -56,6 +56,17 @@ class AnswerService implements AnswerServiceInterface
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Answer|null
+     */
+    public function findOneById(int $id): ?Answer
+    {
+        return $this->answerRepository->findOneById($id);
+    }
+
+    /**
      * Save entity.
      *
      * @param Answer $answer Answer entity

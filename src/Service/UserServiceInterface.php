@@ -24,6 +24,14 @@ interface UserServiceInterface
     public function getPaginatedList(int $page): PaginationInterface;
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public function findOneById(int $id): ?User;
+
+    /**
      * Save the entity.
      *
      * @param User $user User entity

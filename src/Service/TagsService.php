@@ -55,6 +55,17 @@ class TagsService implements TagsServiceInterface
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Tags|null
+     */
+    public function findOneById(int $id): ?Tags
+    {
+        return $this->tagsRepository->findOneById($id);
+    }
+
+    /**
      * Save entity.
      *
      * @param Tags $tags Tags entity

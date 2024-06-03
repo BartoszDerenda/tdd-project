@@ -63,8 +63,7 @@ class CategoryController extends AbstractController
     /**
      * Show action.
      *
-     * @param Category $category Category
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route(
@@ -73,8 +72,9 @@ class CategoryController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Category $category): Response
+    public function show(int $id): Response
     {
+        $category = $this->categoryService->findOneById($id);
         return $this->render('category/show.html.twig', ['category' => $category]);
     }
 
@@ -116,14 +116,14 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request  $request  HTTP request
-     * @param Category $category Category entity
-     *
+     * @param Request $request HTTP request
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'category_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, int $id): Response
     {
+        $category = $this->categoryService->findOneById($id);
         $form = $this->createForm(
             CategoryType::class,
             $category,
@@ -157,14 +157,14 @@ class CategoryController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request  $request  HTTP request
-     * @param Category $category Category entity
-     *
+     * @param Request $request HTTP request
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'category_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Category $category): Response
+    public function delete(Request $request, int $id): Response
     {
+        $category = $this->categoryService->findOneById($id);
         if (!$this->categoryService->canBeDeleted($category)) {
             $this->addFlash(
                 'warning',

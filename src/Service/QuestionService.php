@@ -55,6 +55,17 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Question|null
+     */
+    public function findOneById(int $id): ?Question
+    {
+        return $this->questionRepository->findOneById($id);
+    }
+
+    /**
      * Get paginated list for category.
      *
      * @param int      $page     Page number

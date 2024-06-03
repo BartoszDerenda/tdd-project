@@ -68,6 +68,17 @@ class QuestionRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find one by id.
+     *
+     * @param int $id
+     * @return Question|null
+     */
+    public function findOneById(int $id): ?Question
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    /**
      * Query all records by category.
      *
      * @param Category $category Category entity

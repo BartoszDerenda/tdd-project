@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -63,8 +64,7 @@ class TagsController extends AbstractController
     /**
      * Show action.
      *
-     * @param Tags $tags Tags
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route(
@@ -73,8 +73,14 @@ class TagsController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Tags $tags): Response
+    public function show(int $id): Response
     {
+        $tags = $this->tagsService->findOneById($id);
+
+        if (!$tags) {
+            throw $this->createNotFoundException('The tag does not exist.');
+        }
+
         return $this->render('tags/show.html.twig', ['tags' => $tags]);
     }
 
@@ -117,13 +123,18 @@ class TagsController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Tags    $tags    Tags entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'tags_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    public function edit(Request $request, Tags $tags): Response
+    public function edit(Request $request, int $id): Response
     {
+        $tags = $this->tagsService->findOneById($id);
+
+        if (!$tags) {
+            throw $this->createNotFoundException('The tag does not exist.');
+        }
+
         $form = $this->createForm(
             TagsType::class,
             $tags,
@@ -158,13 +169,18 @@ class TagsController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Tags    $tags    Tags entity
-     *
+     * @param int $id
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'tags_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Tags $tags): Response
+    public function delete(Request $request, int $id): Response
     {
+        $tags = $this->tagsService->findOneById($id);
+
+        if (!$tags) {
+            throw $this->createNotFoundException('The tag does not exist.');
+        }
+
         $form = $this->createForm(
             FormType::class,
             $tags,
