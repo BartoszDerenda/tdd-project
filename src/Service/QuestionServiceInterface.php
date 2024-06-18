@@ -24,7 +24,7 @@ interface QuestionServiceInterface
     public function getPaginatedList(int $page): PaginationInterface;
 
     /**
-     * Get paginated list.
+     * Get paginated list for category.
      *
      * @param int      $page     Page number
      * @param Category $category Category entity

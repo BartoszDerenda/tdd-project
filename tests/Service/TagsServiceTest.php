@@ -29,7 +29,7 @@ class TagsServiceTest extends KernelTestCase
     /**
      * Tags service.
      */
-    private ?TagsServiceInterface $categoryService;
+    private ?TagsServiceInterface $tagsService;
 
     /**
      * Set up test.
@@ -41,7 +41,7 @@ class TagsServiceTest extends KernelTestCase
     {
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
-        $this->categoryService = $container->get(TagsService::class);
+        $this->tagsService = $container->get(TagsService::class);
     }
 
     /**
@@ -54,16 +54,19 @@ class TagsServiceTest extends KernelTestCase
         // given
         $expectedTags = new Tags();
         $expectedTags->setTitle('Test Tags');
+        $expectedTags->setSlug('test_slug');
+        $expectedTags->setCreatedAt(new \DateTimeImmutable());
+        $expectedTags->setUpdatedAt(new \DateTimeImmutable());
 
         // when
-        $this->categoryService->save($expectedTags);
+        $this->tagsService->save($expectedTags);
 
         // then
         $expectedTagsId = $expectedTags->getId();
         $resultTags = $this->entityManager->createQueryBuilder()
-            ->select('category')
-            ->from(Tags::class, 'category')
-            ->where('category.id = :id')
+            ->select('tags')
+            ->from(Tags::class, 'tags')
+            ->where('tags.id = :id')
             ->setParameter(':id', $expectedTagsId, Types::INTEGER)
             ->getQuery()
             ->getSingleResult();
@@ -79,20 +82,20 @@ class TagsServiceTest extends KernelTestCase
     public function testDelete(): void
     {
         // given
-        $categoryToDelete = new Tags();
-        $categoryToDelete->setTitle('Test Tags');
-        $this->entityManager->persist($categoryToDelete);
+        $tagsToDelete = new Tags();
+        $tagsToDelete->setTitle('Test Tags');
+        $this->entityManager->persist($tagsToDelete);
         $this->entityManager->flush();
-        $deletedTagsId = $categoryToDelete->getId();
+        $deletedTagsId = $tagsToDelete->getId();
 
         // when
-        $this->categoryService->delete($categoryToDelete);
+        $this->tagsService->delete($tagsToDelete);
 
         // then
         $resultTags = $this->entityManager->createQueryBuilder()
-            ->select('category')
-            ->from(Tags::class, 'category')
-            ->where('category.id = :id')
+            ->select('tags')
+            ->from(Tags::class, 'tags')
+            ->where('tags.id = :id')
             ->setParameter(':id', $deletedTagsId, Types::INTEGER)
             ->getQuery()
             ->getOneOrNullResult();
@@ -103,8 +106,8 @@ class TagsServiceTest extends KernelTestCase
     /**
      * Test find by id.
      *
+     * @return void
      */
-
     public function testFindById(): void
     {
         // given
@@ -115,7 +118,28 @@ class TagsServiceTest extends KernelTestCase
         $expectedTagsId = $expectedTags->getId();
 
         // when
-        $resultTags = $this->categoryService->findOneById($expectedTagsId);
+        $resultTags = $this->tagsService->findOneById($expectedTagsId);
+
+        // then
+        $this->assertEquals($expectedTags, $resultTags);
+    }
+
+    /**
+     * Test find one by title.
+     *
+     * @return void
+     */
+    public function testFindByTitle(): void
+    {
+        // given
+        $expectedTags = new Tags();
+        $expectedTags->setTitle('Test Tags');
+        $this->entityManager->persist($expectedTags);
+        $this->entityManager->flush();
+        $expectedTagsTitle = $expectedTags->getTitle();
+
+        // when
+        $resultTags = $this->tagsService->findOneByTitle($expectedTagsTitle);
 
         // then
         $this->assertEquals($expectedTags, $resultTags);
@@ -123,6 +147,8 @@ class TagsServiceTest extends KernelTestCase
 
     /**
      * Test pagination empty list.
+     *
+     * @return void
      */
     public function testGetPaginatedList(): void
     {
@@ -133,19 +159,32 @@ class TagsServiceTest extends KernelTestCase
 
         $counter = 0;
         while ($counter < $dataSetSize) {
-            $category = new Tags();
-            $category->setTitle('Test Tags #'.$counter);
-            $this->categoryService->save($category);
+            $tags = new Tags();
+            $tags->setTitle('Test Tags #'.$counter);
+            $this->tagsService->save($tags);
 
             ++$counter;
         }
 
         // when
-        $result = $this->categoryService->getPaginatedList($page);
+        $result = $this->tagsService->getPaginatedList($page);
 
         // then
         $this->assertEquals($expectedResultSize, $result->count());
     }
 
-    // other tests for paginated list
+    /**
+     * Reset the environment.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Clear the entity manager to avoid memory leaks
+        $this->entityManager->close();
+        $this->entityManager = null;
+    }
+
 }

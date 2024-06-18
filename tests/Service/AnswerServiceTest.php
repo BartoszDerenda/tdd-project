@@ -37,7 +37,7 @@ class AnswerServiceTest extends KernelTestCase
      *
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
@@ -80,6 +80,7 @@ class AnswerServiceTest extends KernelTestCase
         $expectedAnswer->setAuthor($user);
         $expectedAnswer->setCreatedAt(new \DateTimeImmutable());
         $expectedAnswer->setUpdatedAt(new \DateTimeImmutable());
+        $expectedAnswer->setImage('randomimg.png');
         $expectedAnswer->setBestAnswer(True);
 
         // when
@@ -156,8 +157,95 @@ class AnswerServiceTest extends KernelTestCase
     }
 
     /**
+     * Test award answer.
+     */
+    public function testAward(): void
+    {
+        // given
+        $category = new Category();
+        $category->setTitle('test_category');
+        $category->setSlug('test_category_slug');
+
+        $user = new User();
+        $user->setNickname('test_user');
+        $user->setEmail('test@example.com');
+        $user->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($user);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $answer = new Answer();
+        $answer->setQuestion($question);
+        $answer->setComment('Test answer');
+        $answer->setAuthor($user);
+        $answer->setCreatedAt(new \DateTimeImmutable());
+        $answer->setUpdatedAt(new \DateTimeImmutable());
+        $answer->setBestAnswer(False); // Answer flagged as not the best one
+
+        $this->entityManager->persist($answer);
+        $this->entityManager->flush();
+
+        // when
+        $this->answerService->award($answer);
+
+        // then
+        $this->assertTrue(True, $answer->isBestAnswer());
+    }
+
+    /**
+     * Test deaward answer.
+     */
+    public function testDeaward(): void
+    {
+        // given
+        $category = new Category();
+        $category->setTitle('test_category');
+        $category->setSlug('test_category_slug');
+
+        $user = new User();
+        $user->setNickname('test_user');
+        $user->setEmail('test@example.com');
+        $user->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($user);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $answer = new Answer();
+        $answer->setQuestion($question);
+        $answer->setComment('Test answer');
+        $answer->setAuthor($user);
+        $answer->setCreatedAt(new \DateTimeImmutable());
+        $answer->setUpdatedAt(new \DateTimeImmutable());
+        $answer->setBestAnswer(True); // Answer flagged as (one of) the best one
+
+        $this->entityManager->persist($answer);
+        $this->entityManager->flush();
+
+        // when
+        $this->answerService->deaward($answer);
+
+        // then
+        $this->assertFalse(False, $answer->isBestAnswer());
+    }
+
+    /**
      * Test find by id.
-     *
      */
     public function testFindById(): void
     {
@@ -255,6 +343,18 @@ class AnswerServiceTest extends KernelTestCase
 
         // then
         $this->assertEquals($expectedResultSize, $result->count());
+    }
+
+    /**
+     * Reset the environment.
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Clear the entity manager to avoid memory leaks
+        $this->entityManager->close();
+        $this->entityManager = null;
     }
 
 }

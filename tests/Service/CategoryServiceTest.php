@@ -6,6 +6,8 @@
 namespace App\Tests\Service;
 
 use App\Entity\Category;
+use App\Entity\Question;
+use App\Entity\User;
 use App\Service\CategoryService;
 use App\Service\CategoryServiceInterface;
 use Doctrine\DBAL\Types\Types;
@@ -54,6 +56,9 @@ class CategoryServiceTest extends KernelTestCase
         // given
         $expectedCategory = new Category();
         $expectedCategory->setTitle('Test Category');
+        $expectedCategory->setSlug('test_slug');
+        $expectedCategory->setCreatedAt(new \DateTimeImmutable());
+        $expectedCategory->setUpdatedAt(new \DateTimeImmutable());
 
         // when
         $this->categoryService->save($expectedCategory);
@@ -101,8 +106,39 @@ class CategoryServiceTest extends KernelTestCase
     }
 
     /**
+     * Test can Category be deleted?
+     */
+    public function testCanBeDeleted(): void
+    {
+        // given
+        $category = new Category();
+        $category->setTitle('Test Category');
+
+        $user = new User();
+        $user->setNickname('test_user');
+        $user->setEmail('test@example.com');
+        $user->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($user);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($category);
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($question);
+        $this->entityManager->flush();
+
+        // when
+        $expectedFalse = $this->categoryService->canBeDeleted($category);
+
+        // then
+        $this->assertFalse(False, $expectedFalse);
+    }
+
+    /**
      * Test find by id.
-     *
      */
     public function testFindById(): void
     {
@@ -146,5 +182,16 @@ class CategoryServiceTest extends KernelTestCase
         $this->assertEquals($expectedResultSize, $result->count());
     }
 
-    // other tests for paginated list
+    /**
+     * Reset the environment.
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Clear the entity manager to avoid memory leaks
+        $this->entityManager->close();
+        $this->entityManager = null;
+    }
+
 }
