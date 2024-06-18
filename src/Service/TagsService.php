@@ -57,8 +57,9 @@ class TagsService implements TagsServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Tags|null
+     * @param int $id Id
+     *
+     * @return Tags|null Answer
      */
     public function findOneById(int $id): ?Tags
     {

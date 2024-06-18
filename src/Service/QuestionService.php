@@ -57,8 +57,9 @@ class QuestionService implements QuestionServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Question|null
+     * @param int $id Id
+     *
+     * @return Question|null Answer
      */
     public function findOneById(int $id): ?Question
     {

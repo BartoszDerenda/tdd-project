@@ -66,8 +66,9 @@ class CategoryService implements CategoryServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Category|null
+     * @param int $id Id
+     *
+     * @return Category|null Answer
      */
     public function findOneById(int $id): ?Category
     {

@@ -8,7 +8,6 @@ namespace App\DataFixtures;
 use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\User;
-use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 /**
@@ -33,12 +32,12 @@ class AnswerFixtures extends AbstractBaseFixtures implements DependentFixtureInt
             $answer = new Answer();
             $answer->setComment($this->faker->sentence(100));
             $answer->setCreatedAt(
-                DateTimeImmutable::createFromMutable(
+                \DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );
             $answer->setUpdatedAt(
-                DateTimeImmutable::createFromMutable(
+                \DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );

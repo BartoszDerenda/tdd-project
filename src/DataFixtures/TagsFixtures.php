@@ -7,7 +7,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Tags;
 use Cocur\Slugify\Slugify;
-use DateTimeImmutable;
 
 /**
  * Class TagsFixtures.
@@ -32,12 +31,12 @@ class TagsFixtures extends AbstractBaseFixtures
             $tags->setTitle($this->faker->unique()->word);
             $tags->setSlug($slugify->slugify($tags->getTitle())); // Set the slug based on the title
             $tags->setCreatedAt(
-                DateTimeImmutable::createFromMutable(
+                \DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );
             $tags->setUpdatedAt(
-                DateTimeImmutable::createFromMutable(
+                \DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );

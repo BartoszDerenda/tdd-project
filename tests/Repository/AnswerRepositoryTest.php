@@ -43,7 +43,8 @@ class AnswerRepositoryTest extends KernelTestCase
      *
      * @return void
      */
-    public function testFindOneById(): void{
+    public function testFindOneById(): void
+    {
 
         // given
         $category = new Category();
@@ -72,7 +73,7 @@ class AnswerRepositoryTest extends KernelTestCase
         $answer->setAuthor($user);
         $answer->setCreatedAt(new \DateTimeImmutable());
         $answer->setUpdatedAt(new \DateTimeImmutable());
-        $answer->setBestAnswer(True);
+        $answer->setBestAnswer(true);
 
         $this->entityManager->persist($answer);
         $this->entityManager->flush();
@@ -116,7 +117,7 @@ class AnswerRepositoryTest extends KernelTestCase
         $answer->setAuthor($user);
         $answer->setCreatedAt(new \DateTimeImmutable());
         $answer->setUpdatedAt(new \DateTimeImmutable());
-        $answer->setBestAnswer(False); // Answer flagged as not the best one
+        $answer->setBestAnswer(false); // Answer flagged as not the best one
 
         $this->entityManager->persist($answer);
         $this->entityManager->flush();
@@ -125,7 +126,7 @@ class AnswerRepositoryTest extends KernelTestCase
         $this->answerRepository->award($answer);
 
         // then
-        $this->assertTrue(True, $answer->isBestAnswer());
+        $this->assertTrue(true, $answer->isBestAnswer());
     }
 
     /**
@@ -160,7 +161,7 @@ class AnswerRepositoryTest extends KernelTestCase
         $answer->setAuthor($user);
         $answer->setCreatedAt(new \DateTimeImmutable());
         $answer->setUpdatedAt(new \DateTimeImmutable());
-        $answer->setBestAnswer(True); // Answer flagged as (one of) the best one
+        $answer->setBestAnswer(true); // Answer flagged as (one of) the best one
 
         $this->entityManager->persist($answer);
         $this->entityManager->flush();
@@ -169,7 +170,7 @@ class AnswerRepositoryTest extends KernelTestCase
         $this->answerRepository->deaward($answer);
 
         // then
-        $this->assertFalse(False, $answer->isBestAnswer());
+        $this->assertFalse(false, $answer->isBestAnswer());
     }
 
     /**
@@ -185,5 +186,4 @@ class AnswerRepositoryTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

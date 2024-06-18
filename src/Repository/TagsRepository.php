@@ -57,12 +57,12 @@ class TagsRepository extends ServiceEntityRepository
             ->orderBy('tags.updatedAt', 'DESC');
     }
 
-
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Tags|null
+     * @param int $id Id
+     *
+     * @return Tags|null Tags
      */
     public function findOneById(int $id): ?Tags
     {
@@ -137,7 +137,7 @@ class TagsRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('tags');
     }

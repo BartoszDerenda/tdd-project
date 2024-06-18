@@ -52,13 +52,16 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.3",
         "doctrine/doctrine-fixtures-bundle": "^3.6",
+        "escapestudios/symfony2-coding-standard": "^3.13",
         "fakerphp/faker": "^1.23",
+        "friendsofphp/php-cs-fixer": "^3.59",
         "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.10",
         "symfony/browser-kit": "6.1.*",
         "symfony/css-selector": "6.1.*",
         "symfony/debug-bundle": "6.1.*",
         "symfony/maker-bundle": "^1.50",
-        "symfony/phpunit-bridge": "^7.0",
+        "symfony/phpunit-bridge": "^7.1",
         "symfony/stopwatch": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*"
     },

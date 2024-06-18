@@ -70,8 +70,9 @@ class QuestionRepository extends ServiceEntityRepository
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Question|null
+     * @param int $id Id
+     *
+     * @return Question|null Question
      */
     public function findOneById(int $id): ?Question
     {
@@ -150,7 +151,7 @@ class QuestionRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('question');
     }

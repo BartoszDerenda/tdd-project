@@ -27,8 +27,7 @@ interface AnswerServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Answer|null
+     * @param int $id Id
      */
     public function findOneById(int $id): ?Answer;
 

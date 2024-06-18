@@ -25,8 +25,7 @@ interface TagsServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Tags|null
+     * @param int $id Id
      */
     public function findOneById(int $id): ?Tags;
 

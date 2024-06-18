@@ -43,8 +43,9 @@ class AnswerController extends AbstractController
     /**
      * Constructor.
      *
-     * @param AnswerServiceInterface $answerService Answer interface
-     * @param TranslatorInterface    $translator    Translator interface
+     * @param AnswerServiceInterface   $answerService   Answer interface
+     * @param QuestionServiceInterface $questionService Question interface
+     * @param TranslatorInterface      $translator      Translator interface
      */
     public function __construct(AnswerServiceInterface $answerService, QuestionServiceInterface $questionService, TranslatorInterface $translator)
     {
@@ -57,7 +58,8 @@ class AnswerController extends AbstractController
      * Create action.
      *
      * @param Request $request Request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response Response
      */
     #[Route(
@@ -117,7 +119,8 @@ class AnswerController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'answer_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -176,7 +179,8 @@ class AnswerController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'answer_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
@@ -225,7 +229,8 @@ class AnswerController extends AbstractController
      * Mark action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/mark', name: 'answer_mark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -274,7 +279,8 @@ class AnswerController extends AbstractController
      * Unmark action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/unmark', name: 'answer_unmark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]

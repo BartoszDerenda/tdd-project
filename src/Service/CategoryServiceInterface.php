@@ -25,8 +25,7 @@ interface CategoryServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Category|null
+     * @param int $id Id
      */
     public function findOneById(int $id): ?Category;
 

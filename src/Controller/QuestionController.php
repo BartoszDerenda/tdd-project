@@ -12,7 +12,6 @@ use App\Form\Type\QuestionType;
 use App\Service\AnswerServiceInterface;
 use App\Service\CategoryServiceInterface;
 use App\Service\QuestionServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +51,7 @@ class QuestionController extends AbstractController
      *
      * @param QuestionServiceInterface $questionService Question interface
      * @param AnswerServiceInterface   $answerService   Answer interface
+     * @param CategoryServiceInterface $categoryService Category interface
      * @param TranslatorInterface      $translator      Translator interface
      */
     public function __construct(QuestionServiceInterface $questionService, AnswerServiceInterface $answerService, CategoryServiceInterface $categoryService, TranslatorInterface $translator)
@@ -83,7 +83,8 @@ class QuestionController extends AbstractController
      * Show action.
      *
      * @param Request $request Request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response Response
      */
     #[Route(
@@ -112,7 +113,8 @@ class QuestionController extends AbstractController
      * Show by category action.
      *
      * @param Request $request Request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response Response
      */
     #[Route(
@@ -188,7 +190,8 @@ class QuestionController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'question_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -247,7 +250,8 @@ class QuestionController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'question_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]

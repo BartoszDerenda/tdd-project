@@ -67,13 +67,13 @@ class AdminType extends AbstractType
             [
                 'attr' => ['class' => 'form-control'],
                 'choices' => [
-                        'ROLE_ADMIN' => [
-                            'Yes' => 'ROLE_ADMIN',
-                        ],
-                        'ROLE_USER' => [
-                            'Yes' => 'ROLE_USER',
-                        ],
+                    'ROLE_ADMIN' => [
+                        'Yes' => 'ROLE_ADMIN',
                     ],
+                    'ROLE_USER' => [
+                        'Yes' => 'ROLE_USER',
+                    ],
+                ],
                 'multiple' => true,
                 'required' => true,
             ]

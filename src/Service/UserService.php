@@ -57,8 +57,9 @@ class UserService implements UserServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return User|null
+     * @param int $id Id
+     *
+     * @return User|null Answer
      */
     public function findOneById(int $id): ?User
     {

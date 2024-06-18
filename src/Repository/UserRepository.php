@@ -59,8 +59,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return User|null
+     * @param int $id Id
+     *
+     * @return User|null User
      */
     public function findOneById(int $id): ?User
     {
@@ -117,7 +118,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('user');
     }

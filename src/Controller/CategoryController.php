@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Category controller.
  */
@@ -63,7 +64,8 @@ class CategoryController extends AbstractController
     /**
      * Show action.
      *
-     * @param int $id
+     * @param int $id Id
+     *
      * @return Response HTTP response
      */
     #[Route(
@@ -75,6 +77,7 @@ class CategoryController extends AbstractController
     public function show(int $id): Response
     {
         $category = $this->categoryService->findOneById($id);
+
         return $this->render('category/show.html.twig', ['category' => $category]);
     }
 
@@ -117,7 +120,8 @@ class CategoryController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'category_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -158,7 +162,8 @@ class CategoryController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'category_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]

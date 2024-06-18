@@ -58,8 +58,9 @@ class AnswerService implements AnswerServiceInterface
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Answer|null
+     * @param int $id Id
+     *
+     * @return Answer|null Answer
      */
     public function findOneById(int $id): ?Answer
     {

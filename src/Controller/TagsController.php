@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -64,7 +63,8 @@ class TagsController extends AbstractController
     /**
      * Show action.
      *
-     * @param int $id
+     * @param int $id Id
+     *
      * @return Response HTTP response
      */
     #[Route(
@@ -123,7 +123,8 @@ class TagsController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'tags_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -169,7 +170,8 @@ class TagsController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param int $id
+     * @param int     $id      Id
+     *
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'tags_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]

@@ -56,14 +56,14 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Category|null
+     * @param int $id Id
+     *
+     * @return Category|null Category
      */
     public function findOneById(int $id): ?Category
     {
         return $this->findOneBy(['id' => $id]);
     }
-
 
     /**
      * Save entity.
@@ -94,7 +94,7 @@ class CategoryRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('category');
     }

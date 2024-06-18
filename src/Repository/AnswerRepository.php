@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Answer repository.
  */
@@ -67,8 +68,9 @@ class AnswerRepository extends ServiceEntityRepository
     /**
      * Find one by id.
      *
-     * @param int $id
-     * @return Answer|null
+     * @param int $id Id
+     *
+     * @return Answer|null Answer
      */
     public function findOneById(int $id): ?Answer
     {
@@ -142,7 +144,7 @@ class AnswerRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('answer');
     }
