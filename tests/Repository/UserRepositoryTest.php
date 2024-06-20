@@ -40,7 +40,8 @@ class UserRepositoryTest extends KernelTestCase
      *
      * @return void
      */
-    public function testFindOneById(): void{
+    public function testFindOneById(): void
+    {
 
         // given
         $user = new User();
@@ -71,5 +72,4 @@ class UserRepositoryTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

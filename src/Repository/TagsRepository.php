@@ -13,6 +13,8 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class TagsRepository.
+ *
  * @extends ServiceEntityRepository<Tags>
  *
  * @method Tags|null find($id, $lockMode = null, $lockVersion = null)

@@ -8,10 +8,13 @@ namespace App\Tests\Service;
 use App\Entity\Category;
 use App\Entity\Question;
 use App\Entity\User;
+use App\Repository\QuestionRepository;
 use App\Service\CategoryService;
 use App\Service\CategoryServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -34,6 +37,11 @@ class CategoryServiceTest extends KernelTestCase
     private ?CategoryServiceInterface $categoryService;
 
     /**
+     * Question repository.
+     */
+    private ?QuestionRepository $questionRepository;
+
+    /**
      * Set up test.
      *
      * @throws ContainerExceptionInterface
@@ -44,6 +52,7 @@ class CategoryServiceTest extends KernelTestCase
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
         $this->categoryService = $container->get(CategoryService::class);
+        $this->questionRepository = $container->get(QuestionRepository::class);
     }
 
     /**
@@ -106,7 +115,7 @@ class CategoryServiceTest extends KernelTestCase
     }
 
     /**
-     * Test can Category be deleted?
+     * Test can Category be deleted? (False)
      */
     public function testCanBeDeleted(): void
     {
@@ -134,7 +143,7 @@ class CategoryServiceTest extends KernelTestCase
         $expectedFalse = $this->categoryService->canBeDeleted($category);
 
         // then
-        $this->assertFalse(False, $expectedFalse);
+        $this->assertFalse(false, $expectedFalse);
     }
 
     /**

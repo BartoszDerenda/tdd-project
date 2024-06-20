@@ -235,18 +235,6 @@ class Question
     }
 
     /**
-     * Remove tag.
-     *
-     * @param Tags $tag Tags
-     *
-     * @return void Void
-     */
-    public function removeTag(Tags $tag): void
-    {
-        $this->tags->removeElement($tag);
-    }
-
-    /**
      * Getter for image.
      *
      * @return string|null Image
@@ -266,54 +254,6 @@ class Question
     public function setImage(?string $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Getter for answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return Collection Answer
-     */
-    public function getAnswer(Answer $answer): Collection
-    {
-        return $this->$answer;
-    }
-
-    /**
-     * Add answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return $this Answer
-     */
-    public function addAnswer(Answer $answer): self
-    {
-        if (!$this->$answer->contains($answer)) {
-            $this->$answer->add($answer);
-            $answer->setQuestion($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return $this Answer
-     */
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->$answer->removeElement($answer)) {
-            // set the owning side to null (unless already changed)
-            if ($answer->getQuestion() === $this) {
-                $answer->setQuestion(null);
-            }
-        }
 
         return $this;
     }

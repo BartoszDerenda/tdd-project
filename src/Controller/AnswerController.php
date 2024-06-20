@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Answer controller.
  */
@@ -91,7 +92,7 @@ class AnswerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $request->files->get('answer')['image'];
             if ($file) {
-                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
+                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
 
                 $file->move(
                     $this->getParameter('uploads_dir'),
@@ -148,7 +149,7 @@ class AnswerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $request->files->get('answer')['image'];
             if ($file) {
-                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
+                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
 
                 $file->move(
                     $this->getParameter('uploads_dir'),

@@ -40,7 +40,8 @@ class TagsRepositoryTest extends KernelTestCase
      *
      * @return void
      */
-    public function testFindOneById(): void{
+    public function testFindOneById(): void
+    {
 
         // given
         $tags = new Tags();
@@ -52,6 +53,30 @@ class TagsRepositoryTest extends KernelTestCase
         // when
         $expectedTags = $this->tagsRepository->findOneById($tags->getId());
 
+        $this->assertNotNull($expectedTags);
+        $this->assertSame('test_tags', $expectedTags->getTitle());
+    }
+
+    /**
+     * Test Add.
+     *
+     * @return void
+     */
+    public function testAdd(): void
+    {
+
+        // given
+        $tags = new Tags();
+        $tags->setTitle('test_tags');
+
+        $this->entityManager->persist($tags);
+        $this->entityManager->flush();
+
+        // when
+        $this->tagsRepository->add($tags, true);
+
+        // then
+        $expectedTags = $this->tagsRepository->findOneById($tags->getId());
         $this->assertNotNull($expectedTags);
         $this->assertSame('test_tags', $expectedTags->getTitle());
     }
@@ -69,5 +94,4 @@ class TagsRepositoryTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

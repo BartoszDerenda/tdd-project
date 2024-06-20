@@ -43,8 +43,8 @@ class QuestionRepositoryTest extends KernelTestCase
      *
      * @return void
      */
-    public function testFindOneById(): void{
-
+    public function testFindOneById(): void
+    {
         // given
         $category = new Category();
         $category->setTitle('test_category');
@@ -86,5 +86,4 @@ class QuestionRepositoryTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }
