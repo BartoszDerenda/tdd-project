@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * class AnswerControllerTest.
@@ -34,6 +35,11 @@ class AnswerControllerTest extends WebTestCase
     private KernelBrowser $httpClient;
 
     /**
+     * Translator.
+     */
+    private TranslatorInterface $translator;
+
+    /**
      * Entity manager.
      */
     private ?EntityManagerInterface $entityManager;
@@ -48,6 +54,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient = static::createClient();
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
+        $this->translator = $container->get(TranslatorInterface::class);
     }
 
     /**
@@ -81,7 +88,7 @@ class AnswerControllerTest extends WebTestCase
         $questionId = $question->getId();
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId);
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -129,7 +136,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($answerAuthor);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -177,7 +184,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -225,7 +232,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -271,7 +278,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($author);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -316,7 +323,7 @@ class AnswerControllerTest extends WebTestCase
         $answerId = $answer->getId();
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -364,7 +371,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/mark');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/mark');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -412,7 +419,7 @@ class AnswerControllerTest extends WebTestCase
         $this->httpClient->loginUser($questionAuthor);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$answerId.'/mark');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $answerId . '/mark');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -459,5 +466,4 @@ class AnswerControllerTest extends WebTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

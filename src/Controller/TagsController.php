@@ -77,10 +77,6 @@ class TagsController extends AbstractController
     {
         $tags = $this->tagsService->findOneById($id);
 
-        if (!$tags) {
-            throw $this->createNotFoundException('The tag does not exist.');
-        }
-
         return $this->render('tags/show.html.twig', ['tags' => $tags]);
     }
 
@@ -132,10 +128,6 @@ class TagsController extends AbstractController
     {
         $tags = $this->tagsService->findOneById($id);
 
-        if (!$tags) {
-            throw $this->createNotFoundException('The tag does not exist.');
-        }
-
         $form = $this->createForm(
             TagsType::class,
             $tags,
@@ -178,10 +170,6 @@ class TagsController extends AbstractController
     public function delete(Request $request, int $id): Response
     {
         $tags = $this->tagsService->findOneById($id);
-
-        if (!$tags) {
-            throw $this->createNotFoundException('The tag does not exist.');
-        }
 
         $form = $this->createForm(
             FormType::class,

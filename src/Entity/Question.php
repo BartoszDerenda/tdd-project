@@ -235,6 +235,20 @@ class Question
     }
 
     /**
+     * Remove tag.
+     *
+     * @param Tags $tag Tags
+     *
+     * @return void Void
+     */
+    public function removeTag(Tags $tag): void
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+    }
+
+    /**
      * Getter for image.
      *
      * @return string|null Image

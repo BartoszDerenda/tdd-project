@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * class QuestionControllerTest.
@@ -33,6 +34,11 @@ class QuestionControllerTest extends WebTestCase
     private KernelBrowser $httpClient;
 
     /**
+     * Translator.
+     */
+    private TranslatorInterface $translator;
+
+    /**
      * Entity manager.
      */
     private ?EntityManagerInterface $entityManager;
@@ -47,6 +53,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient = static::createClient();
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
+        $this->translator = $container->get(TranslatorInterface::class);
     }
 
     /**
@@ -80,7 +87,7 @@ class QuestionControllerTest extends WebTestCase
         $questionId = $question->getId();
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId);
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -96,11 +103,66 @@ class QuestionControllerTest extends WebTestCase
     public function testQuestionCreateRouteNonAuthorizedUser(): void
     {
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if creation of a question was successful.
+     * This route is available for unauthorized users, authorized users and admins.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testQuestionCreateResponseSuccess(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $questionAuthor = new User();
+        $questionAuthor->setNickname('test_user');
+        $questionAuthor->setEmail('test@example.com');
+        $questionAuthor->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($questionAuthor);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($questionAuthor);
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+
+        $saveButton = $this->translator->trans('action.save');
+        $form = $crawler->selectButton($saveButton)->form();
+        $form['question[title]'] = 'Test Title';
+        $form['question[comment]'] = 'Test Comment';
+        $form['question[category]'] = $category->getId();
+        $form['question[tags]'] = 'test_tags';
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/question', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -132,7 +194,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($authorUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -174,7 +236,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($user);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -210,7 +272,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($authorUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -252,7 +314,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -294,7 +356,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($user);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then

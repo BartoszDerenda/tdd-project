@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tags controller tests.
  */
@@ -7,13 +8,13 @@ namespace App\Tests\Controller;
 
 use App\Entity\Tags;
 use App\Entity\Enum\UserRole;
-use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * class TagsControllerTest.
@@ -33,6 +34,11 @@ class TagsControllerTest extends WebTestCase
     private KernelBrowser $httpClient;
 
     /**
+     * Translator.
+     */
+    private TranslatorInterface $translator;
+
+    /**
      * Entity manager.
      */
     private ?EntityManagerInterface $entityManager;
@@ -47,6 +53,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient = static::createClient();
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
+        $this->translator = $container->get(TranslatorInterface::class);
     }
 
     /**
@@ -92,7 +99,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId);
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -113,11 +120,44 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if creation of a tag was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testTagCreateResponseSuccess(): void
+    {
+        // Setup
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+
+        $saveButton = $this->translator->trans('action.save');
+        $form = $crawler->selectButton($saveButton)->form();
+        $form['tags[title]'] = 'Test Tag';
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/tags', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -142,11 +182,50 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if edit of a tag was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testTagEditResponseSuccess(): void
+    {
+        // Setup
+        $tags = new Tags();
+        $tags->setTitle('test_tag');
+
+        $this->entityManager->persist($tags);
+        $this->entityManager->flush();
+        $tagsId = $tags->getId();
+
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/edit');
+
+        $editButton = $this->translator->trans('action.edit');
+        $form = $crawler->selectButton($editButton)->form();
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/tags', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -171,11 +250,50 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if deletion of a tag was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testTagDeleteResponseSuccess(): void
+    {
+        // Setup
+        $tags = new Tags();
+        $tags->setTitle('test_tag');
+
+        $this->entityManager->persist($tags);
+        $this->entityManager->flush();
+        $tagsId = $tags->getId();
+
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/delete');
+
+        $deleteButton = $this->translator->trans('action.delete');
+        $form = $crawler->selectButton($deleteButton)->form();
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/tags', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -218,5 +336,4 @@ class TagsControllerTest extends WebTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

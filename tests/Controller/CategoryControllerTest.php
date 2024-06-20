@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * class CategoryControllerTest.
@@ -33,6 +34,11 @@ class CategoryControllerTest extends WebTestCase
     private KernelBrowser $httpClient;
 
     /**
+     * Translator.
+     */
+    private TranslatorInterface $translator;
+
+    /**
      * Entity manager.
      */
     private ?EntityManagerInterface $entityManager;
@@ -47,6 +53,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient = static::createClient();
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
+        $this->translator = $container->get(TranslatorInterface::class);
     }
 
     /**
@@ -92,7 +99,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId);
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -113,11 +120,44 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if creation of a category was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testCategoryCreateResponseSuccess(): void
+    {
+        // Setup
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+
+        $saveButton = $this->translator->trans('action.save');
+        $form = $crawler->selectButton($saveButton)->form();
+        $form['category[title]'] = 'Test Category';
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/categories', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -135,18 +175,57 @@ class CategoryControllerTest extends WebTestCase
 
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
         $categoryId = $category->getId();
 
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if edit of a category was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testCategoryEditResponseSuccess(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        $categoryId = $category->getId();
+
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/edit');
+
+        $editButton = $this->translator->trans('action.edit');
+        $form = $crawler->selectButton($editButton)->form();
+        $form['category[title]'] = 'Test Category';
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/categories', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -171,7 +250,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -213,11 +292,50 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
         $this->assertEquals(302, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if deletion of a category was successful.
+     * This route is available for admin.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testCategoryDeleteResponseSuccess(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        $categoryId = $category->getId();
+
+        $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
+        $this->httpClient->loginUser($adminUser);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
+
+        $deleteButton = $this->translator->trans('action.delete');
+        $form = $crawler->selectButton($deleteButton)->form();
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/categories', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**
@@ -260,5 +378,4 @@ class CategoryControllerTest extends WebTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }
