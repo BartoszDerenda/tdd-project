@@ -249,30 +249,6 @@ class Question
     }
 
     /**
-     * Getter for image.
-     *
-     * @return string|null Image
-     */
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    /**
-     * Setter for image.
-     *
-     * @param string|null $image Image
-     *
-     * @return $this Image
-     */
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
      * Getter for author.
      *
      * @return User|null Author

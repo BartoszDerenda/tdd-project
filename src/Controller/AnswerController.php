@@ -76,10 +76,6 @@ class AnswerController extends AbstractController
 
         $question = $this->questionService->findOneById($id);
 
-        if (!$question) {
-            throw $this->createNotFoundException('The question does not exist.');
-        }
-
         $answer = new Answer();
         $answer->setAuthor($author);
         $answer->setQuestion($question);
@@ -90,16 +86,6 @@ class AnswerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get('answer')['image'];
-            if ($file) {
-                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
-
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                    $filename
-                );
-                $answer->setImage($filename);
-            }
             $this->answerService->save($answer);
 
             $this->addFlash(
@@ -129,9 +115,6 @@ class AnswerController extends AbstractController
     {
         $answer = $this->answerService->findOneById($id);
 
-        if (!$answer) {
-            throw $this->createNotFoundException('The answer does not exist.');
-        }
         if (!$this->isGranted('VIEW', $answer)) {
             throw new AccessDeniedException('Access Denied.');
         }
@@ -147,16 +130,6 @@ class AnswerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get('answer')['image'];
-            if ($file) {
-                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
-
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                    $filename
-                );
-                $answer->setImage($filename);
-            }
             $this->answerService->save($answer);
 
             $this->addFlash(
@@ -189,9 +162,6 @@ class AnswerController extends AbstractController
     {
         $answer = $this->answerService->findOneById($id);
 
-        if (!$answer) {
-            throw $this->createNotFoundException('The answer does not exist.');
-        }
         if (!$this->isGranted('DELETE', $answer)) {
             throw new AccessDeniedException('Access Denied.');
         }
@@ -239,9 +209,6 @@ class AnswerController extends AbstractController
     {
         $answer = $this->answerService->findOneById($id);
 
-        if (!$answer) {
-            throw $this->createNotFoundException('The answer does not exist.');
-        }
         if (!$this->isGranted('AWARD', $answer)) {
             throw new AccessDeniedException('Access Denied.');
         }
@@ -289,9 +256,6 @@ class AnswerController extends AbstractController
     {
         $answer = $this->answerService->findOneById($id);
 
-        if (!$answer) {
-            throw $this->createNotFoundException('The answer does not exist.');
-        }
         if (!$this->isGranted('AWARD', $answer)) {
             throw new AccessDeniedException('Access Denied.');
         }

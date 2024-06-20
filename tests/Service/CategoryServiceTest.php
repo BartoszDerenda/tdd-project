@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Category service tests.
  */
@@ -13,8 +14,6 @@ use App\Service\CategoryService;
 use App\Service\CategoryServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -37,11 +36,6 @@ class CategoryServiceTest extends KernelTestCase
     private ?CategoryServiceInterface $categoryService;
 
     /**
-     * Question repository.
-     */
-    private ?QuestionRepository $questionRepository;
-
-    /**
      * Set up test.
      *
      * @throws ContainerExceptionInterface
@@ -52,7 +46,6 @@ class CategoryServiceTest extends KernelTestCase
         $container = static::getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
         $this->categoryService = $container->get(CategoryService::class);
-        $this->questionRepository = $container->get(QuestionRepository::class);
     }
 
     /**
@@ -178,7 +171,7 @@ class CategoryServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $category = new Category();
-            $category->setTitle('Test Category #'.$counter);
+            $category->setTitle('Test Category #' . $counter);
             $this->categoryService->save($category);
 
             ++$counter;
@@ -202,5 +195,4 @@ class CategoryServiceTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

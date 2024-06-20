@@ -41,11 +41,8 @@ class CategoryService implements CategoryServiceInterface
      * @param QuestionRepository $questionRepository Question repository
      * @param PaginatorInterface $paginator          Paginator
      */
-    public function __construct(
-        CategoryRepository $categoryRepository,
-        QuestionRepository $questionRepository,
-        PaginatorInterface $paginator
-    ) {
+    public function __construct(CategoryRepository $categoryRepository, QuestionRepository $questionRepository, PaginatorInterface $paginator)
+    {
         $this->categoryRepository = $categoryRepository;
         $this->questionRepository = $questionRepository;
         $this->paginator = $paginator;
@@ -112,7 +109,7 @@ class CategoryService implements CategoryServiceInterface
             $result = $this->questionRepository->countByCategory($category);
 
             return !($result > 0);
-        } catch (NoResultException | NonUniqueResultException) {
+        } catch (NoResultException|NonUniqueResultException) {
             return false;
         }
     }

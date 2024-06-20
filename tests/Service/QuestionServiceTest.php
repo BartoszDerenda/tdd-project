@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Question service tests.
  */
@@ -72,7 +73,6 @@ class QuestionServiceTest extends KernelTestCase
         $expectedQuestion->setComment('Test comment');
         $expectedQuestion->setCreatedAt(new \DateTimeImmutable());
         $expectedQuestion->setUpdatedAt(new \DateTimeImmutable());
-        $expectedQuestion->setImage('randomimg.png');
         $expectedQuestion->setAuthor($user);
         $expectedQuestion->setCategory($category);
 
@@ -206,7 +206,7 @@ class QuestionServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $question = new Question();
-            $question->setTitle('Test Question #'.$counter);
+            $question->setTitle('Test Question #' . $counter);
             $question->setComment('Test comment');
             $question->setAuthor($user);
             $question->setCategory($category);
@@ -251,7 +251,7 @@ class QuestionServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $question = new Question();
-            $question->setTitle('Test Question #'.$counter);
+            $question->setTitle('Test Question #' . $counter);
             $question->setComment('Test comment');
             $question->setAuthor($user);
             $question->setCategory($category);
@@ -279,5 +279,4 @@ class QuestionServiceTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

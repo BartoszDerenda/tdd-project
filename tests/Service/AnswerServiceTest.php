@@ -80,8 +80,7 @@ class AnswerServiceTest extends KernelTestCase
         $expectedAnswer->setAuthor($user);
         $expectedAnswer->setCreatedAt(new \DateTimeImmutable());
         $expectedAnswer->setUpdatedAt(new \DateTimeImmutable());
-        $expectedAnswer->setImage('randomimg.png');
-        $expectedAnswer->setBestAnswer(True);
+        $expectedAnswer->setBestAnswer(true);
 
         // when
         $this->answerService->save($expectedAnswer);

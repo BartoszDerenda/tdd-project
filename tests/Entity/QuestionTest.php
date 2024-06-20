@@ -81,6 +81,7 @@ class QuestionTest extends KernelTestCase
         $expectedQuestion->setAuthor($question->getAuthor());
         $expectedQuestion->setCategory($question->getCategory());
         $expectedQuestion->addTag($tags);
+        $expectedQuestion->removeTag($tags);
 
         $this->entityManager->persist($expectedQuestion);
         $this->entityManager->flush();

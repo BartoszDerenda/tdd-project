@@ -95,6 +95,44 @@ class QuestionControllerTest extends WebTestCase
     }
 
     /**
+     * Test '/question/category/{category_id}' route for non-authorized user.
+     * This route is available for non-authorized users, authorized users, admins.
+     *
+     * @return void
+     */
+    public function testQuestionShowByCategoryNonAuthorizedUser(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $user = new User();
+        $user->setNickname('test_user');
+        $user->setEmail('test@example.com');
+        $user->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($user);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($category);
+        $this->entityManager->persist($question);
+        $this->entityManager->flush();
+
+        $categoryId = $category->getId();
+
+        // When
+        $this->httpClient->request('GET', self::TEST_ROUTE . '/category/' . $categoryId);
+        $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // Then
+        $this->assertEquals(200, $resultHttpStatusCode);
+    }
+
+    /**
      * Test '/question/create' route for non-authorized user.
      * This route is available for non-authorized users, authorized users, admins.
      *
@@ -244,6 +282,61 @@ class QuestionControllerTest extends WebTestCase
     }
 
     /**
+     * Test the response if edit of a question was successful.
+     * This route is available for question's author.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testQuestionEditResponseSuccess(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $questionAuthor = new User();
+        $questionAuthor->setNickname('test_user');
+        $questionAuthor->setEmail('test@example.com');
+        $questionAuthor->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($questionAuthor);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($questionAuthor);
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $questionId = $question->getId();
+        $this->httpClient->loginUser($questionAuthor);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
+
+        $editButton = $this->translator->trans('action.edit');
+        $form = $crawler->selectButton($editButton)->form();
+        $form['question[title]'] = 'Test Title';
+        $form['question[comment]'] = 'Test Comment';
+        $form['question[category]'] = $category->getId();
+        $form['question[tags]'] = 'test_tags';
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/question' . '/' . $questionId, $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
+    }
+
+    /**
      * Test '/question/{question_id}/delete' route for the author of the question.
      * This route is available for question's author, admins.
      *
@@ -361,6 +454,57 @@ class QuestionControllerTest extends WebTestCase
 
         // Then
         $this->assertEquals(403, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test the response if delete of a question was successful.
+     * This route is available for question's author.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testQuestionDeleteResponseSuccess(): void
+    {
+        // Setup
+        $category = new Category();
+        $category->setTitle('test_category');
+
+        $questionAuthor = new User();
+        $questionAuthor->setNickname('test_user');
+        $questionAuthor->setEmail('test@example.com');
+        $questionAuthor->setPassword('testowo');
+
+        $question = new Question();
+        $question->setTitle('Test title');
+        $question->setComment('Test comment');
+        $question->setAuthor($questionAuthor);
+        $question->setCategory($category);
+
+        $this->entityManager->persist($questionAuthor);
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $questionId = $question->getId();
+        $this->httpClient->loginUser($questionAuthor);
+
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
+
+        $deleteButton = $this->translator->trans('action.delete');
+        $form = $crawler->selectButton($deleteButton)->form();
+
+        // When
+        $this->httpClient->submit($form);
+        $response = $this->httpClient->getResponse();
+
+        // Then
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals('/question', $response->headers->get('Location'));
+
+        $this->httpClient->followRedirect();
+
+        $successMessage = $this->translator->trans('message.success');
+        $this->assertSelectorTextContains('.alert.alert-success[role="alert"]', $successMessage);
     }
 
     /**

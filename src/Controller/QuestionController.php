@@ -97,10 +97,6 @@ class QuestionController extends AbstractController
     {
         $question = $this->questionService->findOneById($id);
 
-        if (!$question) {
-            throw $this->createNotFoundException('The question does not exist.');
-        }
-
         $pagination = $this->answerService->getPaginatedList(
             $request->query->getInt('page', 1),
             $question
@@ -126,10 +122,6 @@ class QuestionController extends AbstractController
     public function showByCategory(Request $request, int $id): Response
     {
         $category = $this->categoryService->findOneById($id);
-
-        if (!$category) {
-            throw $this->createNotFoundException('The category does not exist.');
-        }
 
         $pagination = $this->questionService->queryByCategory(
             $request->query->getInt('page', 1),
@@ -160,16 +152,6 @@ class QuestionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get('question')['image'];
-            if ($file) {
-                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
-
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                    $filename
-                );
-                $question->setImage($filename);
-            }
             $this->questionService->save($question);
 
             $this->addFlash(
@@ -199,9 +181,6 @@ class QuestionController extends AbstractController
     {
         $question = $this->questionService->findOneById($id);
 
-        if (!$question) {
-            throw $this->createNotFoundException('The question does not exist.');
-        }
         if (!$this->isGranted('EDIT', $question)) {
             throw new AccessDeniedException('Access Denied.');
         }
@@ -217,16 +196,6 @@ class QuestionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get('question')['image'];
-            if ($file) {
-                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
-
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                    $filename
-                );
-                $question->setImage($filename);
-            }
             $this->questionService->save($question);
 
             $this->addFlash(
@@ -259,9 +228,6 @@ class QuestionController extends AbstractController
     {
         $question = $this->questionService->findOneById($id);
 
-        if (!$question) {
-            throw $this->createNotFoundException('The question does not exist.');
-        }
         if (!$this->isGranted('DELETE', $question)) {
             throw new AccessDeniedException('Access Denied.');
         }
