@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Question entity tests.
+ */
+
 namespace App\Tests\Entity;
 
 use App\Entity\Answer;
@@ -87,7 +91,7 @@ class QuestionTest extends KernelTestCase
         $this->entityManager->flush();
 
         // then
-        $this->assertFalse($expectedQuestion->getId() == $question->getId()); // Ids are unique
+        $this->assertFalse($expectedQuestion->getId() === $question->getId()); // Ids are unique
         $this->assertSame($expectedQuestion->getTitle(), $question->getTitle());
         $this->assertSame($expectedQuestion->getComment(), $question->getComment());
         $this->assertSame($expectedQuestion->getCreatedAt(), $question->getCreatedAt());

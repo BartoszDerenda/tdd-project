@@ -61,6 +61,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryRouteAdmin(): void
@@ -82,6 +83,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryShowRouteAdmin(): void
@@ -99,7 +101,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId);
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -111,6 +113,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryCreateRouteAdmin(): void
@@ -120,7 +123,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -132,6 +135,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryCreateResponseSuccess(): void
@@ -140,7 +144,7 @@ class CategoryControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
 
         $saveButton = $this->translator->trans('action.save');
         $form = $crawler->selectButton($saveButton)->form();
@@ -165,6 +169,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryEditRouteAdmin(): void
@@ -181,7 +186,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -193,6 +198,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryEditResponseSuccess(): void
@@ -208,7 +214,7 @@ class CategoryControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/edit');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/edit');
 
         $editButton = $this->translator->trans('action.edit');
         $form = $crawler->selectButton($editButton)->form();
@@ -233,6 +239,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryDeleteRouteAdmin(): void
@@ -250,7 +257,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -262,6 +269,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin but should return 302 if the category is being used.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryDeleteInUsageRouteAdmin(): void
@@ -292,7 +300,7 @@ class CategoryControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -304,6 +312,7 @@ class CategoryControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testCategoryDeleteResponseSuccess(): void
@@ -319,7 +328,7 @@ class CategoryControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $categoryId . '/delete');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$categoryId.'/delete');
 
         $deleteButton = $this->translator->trans('action.delete');
         $form = $crawler->selectButton($deleteButton)->form();
@@ -344,6 +353,7 @@ class CategoryControllerTest extends WebTestCase
      * @param array $roles User roles
      *
      * @return User User entity
+     *
      * @throws Exception
      */
     private function createUser(array $roles): User

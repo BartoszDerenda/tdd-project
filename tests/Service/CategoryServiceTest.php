@@ -171,7 +171,7 @@ class CategoryServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $category = new Category();
-            $category->setTitle('Test Category #' . $counter);
+            $category->setTitle('Test Category #'.$counter);
             $this->categoryService->save($category);
 
             ++$counter;

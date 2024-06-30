@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Tags entity tests.
+ */
+
 namespace App\Tests\Entity;
 
 use App\Entity\Tags;
@@ -54,9 +58,9 @@ class TagsTest extends KernelTestCase
         $this->entityManager->flush();
 
         // then
-        $this->assertFalse($expectedTags->getId() == $tags->getId()); // Ids are unique
+        $this->assertFalse($expectedTags->getId() === $tags->getId()); // Ids are unique
         $this->assertSame($expectedTags->getTitle(), $tags->getTitle());
-        $this->assertFalse($expectedTags->getSlug() == $tags->getSlug()); // Slugs are unique
+        $this->assertFalse($expectedTags->getSlug() === $tags->getSlug()); // Slugs are unique
         $this->assertSame($expectedTags->getCreatedAt(), $tags->getCreatedAt());
         $this->assertSame($expectedTags->getUpdatedAt(), $tags->getUpdatedAt());
     }

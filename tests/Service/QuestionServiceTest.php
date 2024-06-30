@@ -206,7 +206,7 @@ class QuestionServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $question = new Question();
-            $question->setTitle('Test Question #' . $counter);
+            $question->setTitle('Test Question #'.$counter);
             $question->setComment('Test comment');
             $question->setAuthor($user);
             $question->setCategory($category);
@@ -251,7 +251,7 @@ class QuestionServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $question = new Question();
-            $question->setTitle('Test Question #' . $counter);
+            $question->setTitle('Test Question #'.$counter);
             $question->setComment('Test comment');
             $question->setAuthor($user);
             $question->setCategory($category);

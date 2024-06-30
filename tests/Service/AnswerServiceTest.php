@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Answer service tests.
  */
@@ -133,7 +134,7 @@ class AnswerServiceTest extends KernelTestCase
         $answerToDelete->setAuthor($user);
         $answerToDelete->setCreatedAt(new \DateTimeImmutable());
         $answerToDelete->setUpdatedAt(new \DateTimeImmutable());
-        $answerToDelete->setBestAnswer(True);
+        $answerToDelete->setBestAnswer(true);
 
         $this->entityManager->persist($answerToDelete);
         $this->entityManager->flush();
@@ -187,7 +188,7 @@ class AnswerServiceTest extends KernelTestCase
         $answer->setAuthor($user);
         $answer->setCreatedAt(new \DateTimeImmutable());
         $answer->setUpdatedAt(new \DateTimeImmutable());
-        $answer->setBestAnswer(False); // Answer flagged as not the best one
+        $answer->setBestAnswer(false); // Answer flagged as not the best one
 
         $this->entityManager->persist($answer);
         $this->entityManager->flush();
@@ -196,7 +197,7 @@ class AnswerServiceTest extends KernelTestCase
         $this->answerService->award($answer);
 
         // then
-        $this->assertTrue(True, $answer->isBestAnswer());
+        $this->assertTrue(true, $answer->isBestAnswer());
     }
 
     /**
@@ -231,7 +232,7 @@ class AnswerServiceTest extends KernelTestCase
         $answer->setAuthor($user);
         $answer->setCreatedAt(new \DateTimeImmutable());
         $answer->setUpdatedAt(new \DateTimeImmutable());
-        $answer->setBestAnswer(True); // Answer flagged as (one of) the best one
+        $answer->setBestAnswer(true); // Answer flagged as (one of) the best one
 
         $this->entityManager->persist($answer);
         $this->entityManager->flush();
@@ -240,7 +241,7 @@ class AnswerServiceTest extends KernelTestCase
         $this->answerService->deaward($answer);
 
         // then
-        $this->assertFalse(False, $answer->isBestAnswer());
+        $this->assertFalse(false, $answer->isBestAnswer());
     }
 
     /**
@@ -276,7 +277,7 @@ class AnswerServiceTest extends KernelTestCase
         $expectedAnswer->setAuthor($user);
         $expectedAnswer->setCreatedAt(new \DateTimeImmutable());
         $expectedAnswer->setUpdatedAt(new \DateTimeImmutable());
-        $expectedAnswer->setBestAnswer(True);
+        $expectedAnswer->setBestAnswer(true);
 
         $this->entityManager->persist($expectedAnswer);
         $this->entityManager->flush();
@@ -323,14 +324,13 @@ class AnswerServiceTest extends KernelTestCase
 
         $counter = 0;
         while ($counter < $dataSetSize) {
-
             $answer = new Answer();
             $answer->setQuestion($question);
             $answer->setComment('Test answer#'.$counter);
             $answer->setAuthor($user);
             $answer->setCreatedAt(new \DateTimeImmutable());
             $answer->setUpdatedAt(new \DateTimeImmutable());
-            $answer->setBestAnswer(True);
+            $answer->setBestAnswer(true);
 
             $this->answerService->save($answer);
 
@@ -355,5 +355,4 @@ class AnswerServiceTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

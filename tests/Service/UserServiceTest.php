@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User service tests.
  */
@@ -175,5 +176,4 @@ class UserServiceTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

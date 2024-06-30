@@ -87,7 +87,7 @@ class QuestionControllerTest extends WebTestCase
         $questionId = $question->getId();
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId);
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -125,7 +125,7 @@ class QuestionControllerTest extends WebTestCase
         $categoryId = $category->getId();
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/category/' . $categoryId);
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/category/'.$categoryId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -141,7 +141,7 @@ class QuestionControllerTest extends WebTestCase
     public function testQuestionCreateRouteNonAuthorizedUser(): void
     {
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -153,6 +153,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for unauthorized users, authorized users and admins.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionCreateResponseSuccess(): void
@@ -180,7 +181,7 @@ class QuestionControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
 
         $saveButton = $this->translator->trans('action.save');
         $form = $crawler->selectButton($saveButton)->form();
@@ -208,6 +209,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionEditRouteAuthor(): void
@@ -232,7 +234,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($authorUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -244,6 +246,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionEditRouteNotAuthor(): void
@@ -274,7 +277,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($user);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -286,6 +289,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionEditResponseSuccess(): void
@@ -313,7 +317,7 @@ class QuestionControllerTest extends WebTestCase
         $questionId = $question->getId();
         $this->httpClient->loginUser($questionAuthor);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/edit');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/edit');
 
         $editButton = $this->translator->trans('action.edit');
         $form = $crawler->selectButton($editButton)->form();
@@ -328,7 +332,7 @@ class QuestionControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question' . '/' . $questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -341,6 +345,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author, admins.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionDeleteRouteAuthor(): void
@@ -365,7 +370,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($authorUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -377,6 +382,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author, admins.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionDeleteRouteAdmin(): void
@@ -407,7 +413,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -419,6 +425,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author, admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionDeleteRouteNotAuthor(): void
@@ -449,7 +456,7 @@ class QuestionControllerTest extends WebTestCase
         $this->httpClient->loginUser($user);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -461,6 +468,7 @@ class QuestionControllerTest extends WebTestCase
      * This route is available for question's author.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testQuestionDeleteResponseSuccess(): void
@@ -488,7 +496,7 @@ class QuestionControllerTest extends WebTestCase
         $questionId = $question->getId();
         $this->httpClient->loginUser($questionAuthor);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $questionId . '/delete');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$questionId.'/delete');
 
         $deleteButton = $this->translator->trans('action.delete');
         $form = $crawler->selectButton($deleteButton)->form();
@@ -513,6 +521,7 @@ class QuestionControllerTest extends WebTestCase
      * @param array $roles User roles
      *
      * @return User User entity
+     *
      * @throws Exception
      */
     private function createUser(array $roles): User
@@ -547,5 +556,4 @@ class QuestionControllerTest extends WebTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

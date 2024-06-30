@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Category entity tests.
+ */
+
 namespace App\Tests\Entity;
 
 use App\Entity\Category;
@@ -54,9 +58,9 @@ class CategoryTest extends KernelTestCase
         $this->entityManager->flush();
 
         // then
-        $this->assertFalse($expectedCategory->getId() == $category->getId()); // Ids are unique
+        $this->assertFalse($expectedCategory->getId() === $category->getId()); // Ids are unique
         $this->assertSame($expectedCategory->getTitle(), $category->getTitle());
-        $this->assertFalse($expectedCategory->getSlug() == $category->getSlug()); // Slugs are unique
+        $this->assertFalse($expectedCategory->getSlug() === $category->getSlug()); // Slugs are unique
         $this->assertSame($expectedCategory->getCreatedAt(), $category->getCreatedAt());
         $this->assertSame($expectedCategory->getUpdatedAt(), $category->getUpdatedAt());
     }

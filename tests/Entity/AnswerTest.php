@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Answer entity tests.
+ */
+
 namespace App\Tests\Entity;
 
 use App\Entity\Answer;
@@ -80,7 +84,7 @@ class AnswerTest extends KernelTestCase
         $this->entityManager->flush();
 
         // then
-        $this->assertFalse($expectedAnswer->getId() == $answer->getId()); // Ids are unique
+        $this->assertFalse($expectedAnswer->getId() === $answer->getId()); // Ids are unique
         $this->assertSame($expectedAnswer->getQuestion(), $answer->getQuestion());
         $this->assertSame($expectedAnswer->getComment(), $answer->getComment());
         $this->assertSame($expectedAnswer->getAuthor(), $answer->getAuthor());

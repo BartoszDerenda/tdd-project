@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tags service tests.
  */
@@ -186,5 +187,4 @@ class TagsServiceTest extends KernelTestCase
         $this->entityManager->close();
         $this->entityManager = null;
     }
-
 }

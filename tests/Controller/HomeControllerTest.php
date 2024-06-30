@@ -27,5 +27,4 @@ class HomeControllerTest extends WebTestCase
         // then
         $this->assertEquals(200, $resultHttpStatusCode);
     }
-
 }

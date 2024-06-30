@@ -61,6 +61,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagsRouteAdmin(): void
@@ -82,6 +83,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagsShowRouteAdmin(): void
@@ -99,7 +101,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId);
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId);
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -111,6 +113,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagsCreateRouteAdmin(): void
@@ -120,7 +123,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -132,6 +135,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagCreateResponseSuccess(): void
@@ -140,7 +144,7 @@ class TagsControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/create');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
 
         $saveButton = $this->translator->trans('action.save');
         $form = $crawler->selectButton($saveButton)->form();
@@ -165,6 +169,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagsEditRouteAdmin(): void
@@ -182,7 +187,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/edit');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/edit');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -194,6 +199,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagEditResponseSuccess(): void
@@ -209,7 +215,7 @@ class TagsControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/edit');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/edit');
 
         $editButton = $this->translator->trans('action.edit');
         $form = $crawler->selectButton($editButton)->form();
@@ -233,6 +239,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagsDeleteRouteAdmin(): void
@@ -250,7 +257,7 @@ class TagsControllerTest extends WebTestCase
         $this->httpClient->loginUser($adminUser);
 
         // When
-        $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/delete');
+        $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/delete');
         $resultHttpStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // Then
@@ -262,6 +269,7 @@ class TagsControllerTest extends WebTestCase
      * This route is available for admin.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function testTagDeleteResponseSuccess(): void
@@ -277,7 +285,7 @@ class TagsControllerTest extends WebTestCase
         $adminUser = $this->createUser([UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
 
-        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE . '/' . $tagsId . '/delete');
+        $crawler = $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$tagsId.'/delete');
 
         $deleteButton = $this->translator->trans('action.delete');
         $form = $crawler->selectButton($deleteButton)->form();
@@ -302,6 +310,7 @@ class TagsControllerTest extends WebTestCase
      * @param array $roles User roles
      *
      * @return User User entity
+     *
      * @throws Exception
      */
     private function createUser(array $roles): User

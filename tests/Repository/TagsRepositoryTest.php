@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Tags repository tests.
+ */
+
 namespace App\Tests\Repository;
 
 use App\Entity\Tags;
