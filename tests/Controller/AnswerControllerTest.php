@@ -6,14 +6,13 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Category;
 use App\Entity\Enum\UserRole;
-use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,7 +47,7 @@ class AnswerControllerTest extends WebTestCase
     /**
      * Set up tests.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function setUp(): void
     {
@@ -61,8 +60,6 @@ class AnswerControllerTest extends WebTestCase
     /**
      * Test '/answer/{question_id}' route for non-authorized user.
      * This route is available for unauthorized users, authorized users and admins.
-     *
-     * @return void
      */
     public function testAnswerCreateRouteNonAuthorizedUser(): void
     {
@@ -100,9 +97,7 @@ class AnswerControllerTest extends WebTestCase
      * Test the response if creation of an answer was successful.
      * This route is available for unauthorized users, authorized users and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerCreateResponseSuccess(): void
     {
@@ -142,7 +137,7 @@ class AnswerControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -154,9 +149,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/delete' route for the author of the answer.
      * This route is available for authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerDeleteRouteAuthor(): void
     {
@@ -203,9 +196,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/delete' route for the admin.
      * This route is available for authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerDeleteRouteAdmin(): void
     {
@@ -252,9 +243,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/delete' route for the admin.
      * This route is available for authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerDeleteRouteNonAuthorizedUser(): void
     {
@@ -298,9 +287,7 @@ class AnswerControllerTest extends WebTestCase
      * Test the response if deletion of an answer was successful.
      * This route is available for authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerDeleteResponseSuccess(): void
     {
@@ -348,7 +335,7 @@ class AnswerControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -360,9 +347,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/edit' route for the author.
      * This route is available for the author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerEditRouteAdmin(): void
     {
@@ -409,9 +394,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/edit' route for the admin.
      * This route is available for the author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerEditRouteAuthor(): void
     {
@@ -456,9 +439,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/edit' route for the unauthorized user.
      * This route is available for the author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerEditRouteNonAuthorizedUser(): void
     {
@@ -502,9 +483,7 @@ class AnswerControllerTest extends WebTestCase
      * Test the response if edit of an answer was successful.
      * This route is available for the author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerEditResponseSuccess(): void
     {
@@ -553,7 +532,7 @@ class AnswerControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -565,9 +544,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/mark' route for the admin.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerMarkRouteAdmin(): void
     {
@@ -614,9 +591,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/mark' route for the question's author.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerMarkRouteQuestionAuthor(): void
     {
@@ -663,9 +638,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/mark' route for non-authorized user.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerMarkRouteQuestionNonAuthorizedUser(): void
     {
@@ -711,9 +684,7 @@ class AnswerControllerTest extends WebTestCase
      * Test the response if marking an answer was successful.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerMarkResponseSuccess(): void
     {
@@ -761,7 +732,7 @@ class AnswerControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -773,9 +744,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/unmark' route for the admin.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerUnmarkRouteAdmin(): void
     {
@@ -822,9 +791,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/unmark' route for the question's author.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerUnmarkRouteQuestionAuthor(): void
     {
@@ -871,9 +838,7 @@ class AnswerControllerTest extends WebTestCase
      * Test '/answer/{answer_id}/unmark' route for non-authorized user.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerUnmarkRouteQuestionNonAuthorizedUser(): void
     {
@@ -919,9 +884,7 @@ class AnswerControllerTest extends WebTestCase
      * Test the response if unmarking an answer was successful.
      * This route is available for question's authors and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAnswerUnmarkResponseSuccess(): void
     {
@@ -969,7 +932,7 @@ class AnswerControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -984,7 +947,7 @@ class AnswerControllerTest extends WebTestCase
      *
      * @return User User entity
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function createUser(array $roles): User
     {
@@ -1007,8 +970,6 @@ class AnswerControllerTest extends WebTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

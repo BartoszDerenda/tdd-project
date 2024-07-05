@@ -8,7 +8,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -24,7 +23,7 @@ class CategoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -67,8 +66,6 @@ class CategoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

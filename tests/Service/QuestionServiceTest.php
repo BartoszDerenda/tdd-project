@@ -14,7 +14,6 @@ use App\Service\QuestionServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -38,7 +37,7 @@ class QuestionServiceTest extends KernelTestCase
      * Set up test.
      *
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface|Exception
+     * @throws NotFoundExceptionInterface|\Exception
      */
     public function setUp(): void
     {
@@ -141,8 +140,6 @@ class QuestionServiceTest extends KernelTestCase
 
     /**
      * Test find by id.
-     *
-     * @return void
      */
     public function testFindById(): void
     {
@@ -180,8 +177,6 @@ class QuestionServiceTest extends KernelTestCase
 
     /**
      * Test pagination empty list.
-     *
-     * @return void
      */
     public function testGetPaginatedList(): void
     {
@@ -225,8 +220,6 @@ class QuestionServiceTest extends KernelTestCase
 
     /**
      * Test paginated list for category.
-     *
-     * @return void
      */
     public function testQueryByCategory(): void
     {

@@ -12,7 +12,6 @@ use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -33,7 +32,7 @@ class AnswerRepositoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -44,12 +43,9 @@ class AnswerRepositoryTest extends KernelTestCase
 
     /**
      * Test FindOneById.
-     *
-     * @return void
      */
     public function testFindOneById(): void
     {
-
         // given
         $category = new Category();
         $category->setTitle('test_category');
@@ -179,8 +175,6 @@ class AnswerRepositoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

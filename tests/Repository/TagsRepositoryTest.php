@@ -9,7 +9,6 @@ namespace App\Tests\Repository;
 use App\Entity\Tags;
 use App\Repository\TagsRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -30,7 +29,7 @@ class TagsRepositoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -41,12 +40,9 @@ class TagsRepositoryTest extends KernelTestCase
 
     /**
      * Test FindOneById.
-     *
-     * @return void
      */
     public function testFindOneById(): void
     {
-
         // given
         $tags = new Tags();
         $tags->setTitle('test_tags');
@@ -63,12 +59,9 @@ class TagsRepositoryTest extends KernelTestCase
 
     /**
      * Test Add.
-     *
-     * @return void
      */
     public function testAdd(): void
     {
-
         // given
         $tags = new Tags();
         $tags->setTitle('test_tags');
@@ -87,8 +80,6 @@ class TagsRepositoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

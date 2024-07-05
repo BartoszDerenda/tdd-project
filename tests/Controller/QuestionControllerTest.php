@@ -11,7 +11,6 @@ use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -46,7 +45,7 @@ class QuestionControllerTest extends WebTestCase
     /**
      * Set up tests.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function setUp(): void
     {
@@ -59,8 +58,6 @@ class QuestionControllerTest extends WebTestCase
     /**
      * Test '/question/{question_id}' route for non-authorized user.
      * This route is available for non-authorized users, authorized users, admins.
-     *
-     * @return void
      */
     public function testQuestionShowRouteNonAuthorizedUser(): void
     {
@@ -97,8 +94,6 @@ class QuestionControllerTest extends WebTestCase
     /**
      * Test '/question/category/{category_id}' route for non-authorized user.
      * This route is available for non-authorized users, authorized users, admins.
-     *
-     * @return void
      */
     public function testQuestionShowByCategoryNonAuthorizedUser(): void
     {
@@ -135,8 +130,6 @@ class QuestionControllerTest extends WebTestCase
     /**
      * Test '/question/create' route for non-authorized user.
      * This route is available for non-authorized users, authorized users, admins.
-     *
-     * @return void
      */
     public function testQuestionCreateRouteNonAuthorizedUser(): void
     {
@@ -152,9 +145,7 @@ class QuestionControllerTest extends WebTestCase
      * Test the response if creation of a question was successful.
      * This route is available for unauthorized users, authorized users and admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionCreateResponseSuccess(): void
     {
@@ -208,9 +199,7 @@ class QuestionControllerTest extends WebTestCase
      * Test '/question/{question_id}/edit' route for the author of the question.
      * This route is available for question's author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionEditRouteAuthor(): void
     {
@@ -245,9 +234,7 @@ class QuestionControllerTest extends WebTestCase
      * Test '/question/{question_id}/edit' route for a user that is not the author of the question.
      * This route is available for question's author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionEditRouteNotAuthor(): void
     {
@@ -288,9 +275,7 @@ class QuestionControllerTest extends WebTestCase
      * Test the response if edit of a question was successful.
      * This route is available for question's author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionEditResponseSuccess(): void
     {
@@ -332,7 +317,7 @@ class QuestionControllerTest extends WebTestCase
 
         // Then
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('/question'.'/'.$questionId, $response->headers->get('Location'));
+        $this->assertEquals('/question/'.$questionId, $response->headers->get('Location'));
 
         $this->httpClient->followRedirect();
 
@@ -344,9 +329,7 @@ class QuestionControllerTest extends WebTestCase
      * Test '/question/{question_id}/delete' route for the author of the question.
      * This route is available for question's author, admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionDeleteRouteAuthor(): void
     {
@@ -381,9 +364,7 @@ class QuestionControllerTest extends WebTestCase
      * Test '/question/{question_id}/delete' route for an admin.
      * This route is available for question's author, admins.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionDeleteRouteAdmin(): void
     {
@@ -424,9 +405,7 @@ class QuestionControllerTest extends WebTestCase
      * Test '/question/{question_id}/delete' route for an authorized user that is not the author of the question.
      * This route is available for question's author, admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionDeleteRouteNotAuthor(): void
     {
@@ -467,9 +446,7 @@ class QuestionControllerTest extends WebTestCase
      * Test the response if delete of a question was successful.
      * This route is available for question's author.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testQuestionDeleteResponseSuccess(): void
     {
@@ -522,7 +499,7 @@ class QuestionControllerTest extends WebTestCase
      *
      * @return User User entity
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function createUser(array $roles): User
     {
@@ -545,8 +522,6 @@ class QuestionControllerTest extends WebTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

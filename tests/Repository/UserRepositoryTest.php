@@ -9,7 +9,6 @@ namespace App\Tests\Repository;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -30,7 +29,7 @@ class UserRepositoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -41,12 +40,9 @@ class UserRepositoryTest extends KernelTestCase
 
     /**
      * Test FindOneById.
-     *
-     * @return void
      */
     public function testFindOneById(): void
     {
-
         // given
         $user = new User();
         $user->setNickname('test_user');
@@ -65,8 +61,6 @@ class UserRepositoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

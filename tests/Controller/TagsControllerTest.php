@@ -6,12 +6,11 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Tags;
 use App\Entity\Enum\UserRole;
+use App\Entity\Tags;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -46,7 +45,7 @@ class TagsControllerTest extends WebTestCase
     /**
      * Set up tests.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function setUp(): void
     {
@@ -60,9 +59,7 @@ class TagsControllerTest extends WebTestCase
      * Test '/tags' route for admin.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagsRouteAdmin(): void
     {
@@ -82,9 +79,7 @@ class TagsControllerTest extends WebTestCase
      * Test '/tags/{tags_id}' route for admin.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagsShowRouteAdmin(): void
     {
@@ -112,9 +107,7 @@ class TagsControllerTest extends WebTestCase
      * Test '/tags/create' route for admin.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagsCreateRouteAdmin(): void
     {
@@ -134,9 +127,7 @@ class TagsControllerTest extends WebTestCase
      * Test the response if creation of a tag was successful.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagCreateResponseSuccess(): void
     {
@@ -168,9 +159,7 @@ class TagsControllerTest extends WebTestCase
      * Test '/tags/{tags_id}/edit' route for admin.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagsEditRouteAdmin(): void
     {
@@ -198,9 +187,7 @@ class TagsControllerTest extends WebTestCase
      * Test the response if edit of a tag was successful.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagEditResponseSuccess(): void
     {
@@ -238,9 +225,7 @@ class TagsControllerTest extends WebTestCase
      * Test '/tags/{tags_id}/delete' route for admin.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagsDeleteRouteAdmin(): void
     {
@@ -268,9 +253,7 @@ class TagsControllerTest extends WebTestCase
      * Test the response if deletion of a tag was successful.
      * This route is available for admin.
      *
-     * @return void
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testTagDeleteResponseSuccess(): void
     {
@@ -311,7 +294,7 @@ class TagsControllerTest extends WebTestCase
      *
      * @return User User entity
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function createUser(array $roles): User
     {
@@ -334,8 +317,6 @@ class TagsControllerTest extends WebTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

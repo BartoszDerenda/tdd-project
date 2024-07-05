@@ -9,7 +9,6 @@ namespace App\Tests\Repository;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -30,7 +29,7 @@ class CategoryRepositoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -41,8 +40,6 @@ class CategoryRepositoryTest extends KernelTestCase
 
     /**
      * Test FindOneById.
-     *
-     * @return void
      */
     public function testFindOneById(): void
     {
@@ -63,8 +60,6 @@ class CategoryRepositoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

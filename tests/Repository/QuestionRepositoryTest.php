@@ -7,12 +7,10 @@
 namespace App\Tests\Repository;
 
 use App\Entity\Category;
-use App\Entity\Enum\UserRole;
 use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -33,7 +31,7 @@ class QuestionRepositoryTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -44,8 +42,6 @@ class QuestionRepositoryTest extends KernelTestCase
 
     /**
      * Test findOneById.
-     *
-     * @return void
      */
     public function testFindOneById(): void
     {
@@ -79,8 +75,6 @@ class QuestionRepositoryTest extends KernelTestCase
 
     /**
      * Reset the environment.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {

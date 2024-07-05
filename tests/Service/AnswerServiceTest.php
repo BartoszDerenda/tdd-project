@@ -15,7 +15,6 @@ use App\Service\AnswerServiceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -36,7 +35,7 @@ class AnswerServiceTest extends KernelTestCase
     /**
      * Set up test.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {
@@ -49,11 +48,11 @@ class AnswerServiceTest extends KernelTestCase
      * Test save.
      *
      * @throws ORMException
-     * @throws Exception
+     * @throws \Exception
      */
     public function testSave(): void
     {
-        //setup
+        // setup
         $category = new Category();
         $category->setTitle('test_category');
         $category->setSlug('test_category_slug');
@@ -106,7 +105,7 @@ class AnswerServiceTest extends KernelTestCase
      */
     public function testDelete(): void
     {
-        //setup
+        // setup
         $category = new Category();
         $category->setTitle('test_category');
         $category->setSlug('test_category_slug');
@@ -249,7 +248,7 @@ class AnswerServiceTest extends KernelTestCase
      */
     public function testFindById(): void
     {
-        //setup
+        // setup
         $category = new Category();
         $category->setTitle('test_category');
         $category->setSlug('test_category_slug');
@@ -296,7 +295,7 @@ class AnswerServiceTest extends KernelTestCase
      */
     public function testGetPaginatedList(): void
     {
-        //setup
+        // setup
         $category = new Category();
         $category->setTitle('test_category');
         $category->setSlug('test_category_slug');
